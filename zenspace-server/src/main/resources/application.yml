@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: zenspace-server
+server:
+  port: 8901
