@@ -1,3 +1,10 @@
+ZENSPACE_CONFIG:
+  POSTGRES:
+    HOST: localhost
+    PORT: 5432
+    DATABASE: zenspace
+    USERNAME: postgres
+    PASSWORD: postgres
 spring:
   application:
     name: zenspace-server
