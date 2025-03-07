@@ -2,7 +2,7 @@ package com.cromxt.zenspaceserver.respository;
 
 
 import com.cromxt.zenspaceserver.entity.UserEntity;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends ReactiveCrudRepository<UserEntity,String> {
+public interface UserRepository extends CrudRepository<UserEntity,String> {
 }

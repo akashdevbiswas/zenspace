@@ -1,10 +1,8 @@
 package com.cromxt.zenspaceserver.entity;
 
 
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -15,19 +13,22 @@ import java.util.UUID;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("users")
+@Entity
+@Table(name = "users")
 public class UserEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column("first_name")
+    @Column(name = "first_name")
     private String firstName;
-    @Column("last_name")
+    @Column(name = "last_name")
     private String lastName;
     private String email;
     private String username;
+    @Enumerated
     private Gender gender;
     private String password;
     private String avatar;
-    @Column("date_of_birth")
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 }

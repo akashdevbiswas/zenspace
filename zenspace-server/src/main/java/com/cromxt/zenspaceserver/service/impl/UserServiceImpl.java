@@ -7,7 +7,6 @@ import com.cromxt.zenspaceserver.entity.UserEntity;
 import com.cromxt.zenspaceserver.service.AuthService;
 import com.cromxt.zenspaceserver.service.UserService;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 
 @Service
@@ -15,17 +14,17 @@ public class UserServiceImpl implements AuthService, UserService {
 
 
     @Override
-    public Mono<AuthTokens> generateToken(UserCredential credential) {
+    public AuthTokens generateToken(UserCredential credential) {
         return null;
     }
 
     @Override
-    public Mono<AuthTokens> generateAccessToken(String refreshToken) {
+    public AuthTokens generateAccessToken(String refreshToken) {
         return null;
     }
 
     @Override
-    public Mono<UserEntity> saveUser(NewUser newUser) {
+    public UserEntity saveUser(NewUser newUser) {
         return null;
     }
 }
