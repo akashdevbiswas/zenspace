@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/demo")
 public class DemoController {
 
-    @GetMapping(value = "/{username}")
-    public String hello(@PathVariable String username) {
+    @GetMapping(value = "/{userId}")
+    public String hello(@PathVariable String userId) {
         return "hello";
     }
 }

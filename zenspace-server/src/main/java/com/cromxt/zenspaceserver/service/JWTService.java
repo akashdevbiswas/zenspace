@@ -8,4 +8,5 @@ public interface JWTService {
     String generateAccessToken(String username, Map<String, Object> extraClaims);
     String generateRefreshToken(String username);
     Boolean isTokenValid(String token, String username);
+    Boolean isTokenNonExpired(String token);
 }

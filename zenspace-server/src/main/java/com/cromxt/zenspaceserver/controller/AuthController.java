@@ -6,12 +6,12 @@ import com.cromxt.zenspaceserver.dtos.request.UserCredential;
 import com.cromxt.zenspaceserver.dtos.response.AuthTokens;
 import com.cromxt.zenspaceserver.dtos.response.UserResponse;
 import com.cromxt.zenspaceserver.service.AuthService;
-import com.cromxt.zenspaceserver.service.EntityMapper;
 import com.cromxt.zenspaceserver.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -20,24 +20,35 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthService authService;
-    private final EntityMapper entityMapper;
 
 
     @PostMapping
-    public AuthTokens loginUser(UserCredential credential) {
-        return authService.generateToken(credential);
+    @ResponseStatus(HttpStatus.CREATED)
+    public AuthTokens loginUser(@RequestBody UserCredential credential,HttpServletResponse response) {
+        AuthTokens tokens = authService.generateToken(credential);
+        Cookie cookie = new Cookie("refreshToken", tokens.refreshToken());
+        response.addCookie(cookie);
+        return tokens;
     }
+
     @PostMapping("/refresh")
-    public AuthTokens refreshToken(String refreshToken) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public AuthTokens refreshAccessToken(@RequestAttribute("refreshToken") String refreshToken) {
         return authService.generateAccessToken(refreshToken);
     }
+
     @PostMapping("/logout")
-    public AuthTokens logoutUser(String refreshToken) {
-       return new AuthTokens("", "");
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logoutUser(HttpServletResponse response) {
+        Cookie cookie = new Cookie("refreshToken", "");
+        response.addCookie(cookie);
     }
+
     @PostMapping("/register")
-    public UserResponse registerUser(NewUser newUser) {
-        return null;
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserResponse registerUser(@ModelAttribute NewUser newUser) {
+        System.out.println(newUser);
+        return userService.saveUser(newUser);
     }
 
 }

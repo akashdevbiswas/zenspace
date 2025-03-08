@@ -3,8 +3,10 @@ package com.cromxt.zenspaceserver.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
@@ -25,10 +27,12 @@ public class UserEntity {
     private String lastName;
     private String email;
     private String username;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     private String password;
     private String avatar;
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

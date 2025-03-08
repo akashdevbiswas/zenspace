@@ -77,7 +77,8 @@ public class JWTServiceImpl implements JWTService {
                 .compact();
     }
 
-    private boolean isTokenNonExpired(String token) {
+    @Override
+    public Boolean isTokenNonExpired(String token) {
         return !extractExpiration(token).before(new Date());
     }
 
