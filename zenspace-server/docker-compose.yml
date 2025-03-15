@@ -1,4 +1,5 @@
 services:
+  
   postgres:
     image: postgres:17.4-alpine3.21
     container_name: zenspace-db
@@ -13,3 +14,18 @@ services:
     restart: always
     ports:
       - "8080:8080"
+  storage-server:
+    image: akashvai/storage-server:latest
+    container_name: akashvai-bucket
+    ports:
+      - "9090:9090"
+      - "9091:9091"
+    environment:
+      - STORAGE_SERVER_DISK_PATH=/var/bucket
+      - STORAGE_SERVER_HTTP_SERVICE_PORT=9090
+      - STORAGE_SERVER_GRPC_SERVICE_PORT=9091
+      - STORAGE_SERVER_ID=bucket-1
+      - SPRING_PROFILES_ACTIVE=local-docker-dev
+    volumes:
+      - ~/Development/files:/var/bucket
+    

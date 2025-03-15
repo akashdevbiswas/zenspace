@@ -1,15 +1,19 @@
 package com.cromxt.zenspaceserver.service.impl;
 
 
+import com.cromxt.toolkit.crombucket.clients.CromBucketWebClient;
+import com.cromxt.toolkit.crombucket.response.FileResponse;
 import com.cromxt.zenspaceserver.dtos.request.NewUser;
 import com.cromxt.zenspaceserver.dtos.response.UserResponse;
 import com.cromxt.zenspaceserver.entity.Gender;
 import com.cromxt.zenspaceserver.entity.UserEntity;
+import com.cromxt.zenspaceserver.exceptions.CromBucketClientException;
 import com.cromxt.zenspaceserver.service.EntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 @Service
@@ -17,6 +21,7 @@ import java.time.LocalDate;
 public class EntityMapperImpl implements EntityMapper {
 
     private final PasswordEncoder passwordEncoder;
+    private final CromBucketWebClient cromBucketWebClient;
 
     @Override
     public UserResponse getUserResponseFromUserEntity(UserEntity userEntity) {
@@ -35,6 +40,12 @@ public class EntityMapperImpl implements EntityMapper {
     @Override
     public UserEntity getUserEntityFromNewUser(NewUser newUser) {
         String encodedPassword = passwordEncoder.encode(newUser.password());
+        FileResponse avatar;
+        try {
+            avatar = cromBucketWebClient.saveFile(newUser.avatar());
+        } catch (IOException e) {
+            throw new CromBucketClientException("Failed to save the file with message: " + e.getMessage());
+        }
         return UserEntity.builder()
                 .username(newUser.username())
                 .password(encodedPassword)
@@ -43,7 +54,8 @@ public class EntityMapperImpl implements EntityMapper {
                 .lastName(newUser.lastName())
                 .dateOfBirth(LocalDate.parse(newUser.dateOfBirth()))
                 .gender(Gender.valueOf(newUser.gender().toUpperCase()))
-                .avatar(newUser.avatar().getOriginalFilename())
+                .avatar(avatar.getAccessUrl())
+                .avatarId(avatar.getMediaId())
                 .build();
     }
 }

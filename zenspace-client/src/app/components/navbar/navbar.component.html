@@ -1,0 +1,18 @@
+<nav
+  class="flex flex-row items-center justify-between px-5 max-w-[80%] mx-auto border border-primary rounded-full"
+>
+  <h1 class="text-[32px] uppercase font-rubik text-primary">Zenspace</h1>
+  <div class="flex flex-row gap-2 min-w-fit nav-items">
+    <a routerLink="/">Home</a>
+    <a routerLink="/chats">Chats</a>
+    <a routerLink="/calls">Calls</a>
+  </div>
+
+  <div id="auth-options" class="">
+    <app-button [onClickHandler]="handler"/>
+  </div>
+  <div id="profile" class="flex items-center flex-row gap-2" [hidden]="true">
+    <img src="" alt="" class="w-full" />
+    <p class="min-w-fit">Username</p>
+  </div>
+</nav>

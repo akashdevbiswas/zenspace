@@ -2,6 +2,11 @@ ZENSPACE_CONFIG_JWT_SECRET: "fdaf05402423743dea17eef133a4c2ca5e87f1c86539cf12cea
 ZENSPACE_CONFIG_ACCESS_TOKEN_EXPIRATION: 86400000
 ZENSPACE_CONFIG_REFRESH_TOKEN_EXPIRATION: 1296000000
 spring:
+  servlet:
+    multipart:
+      max-file-size: 1000000MB
+      max-request-size: 1000000MB
+      enabled: true
   application:
     name: zenspace-server
   datasource:

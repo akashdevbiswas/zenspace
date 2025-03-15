@@ -31,6 +31,8 @@ public class UserEntity {
     private Gender gender;
     private String password;
     private String avatar;
+    @Column(name = "avatar_id")
+    private String avatarId;
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
     @CreationTimestamp

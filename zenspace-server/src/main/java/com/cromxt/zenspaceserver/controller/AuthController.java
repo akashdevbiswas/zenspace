@@ -27,6 +27,8 @@ public class AuthController {
     public AuthTokens loginUser(@RequestBody UserCredential credential,HttpServletResponse response) {
         AuthTokens tokens = authService.generateToken(credential);
         Cookie cookie = new Cookie("refreshToken", tokens.refreshToken());
+        cookie.setHttpOnly(true);
+        cookie.setPath("/api/v1/auth/refresh");
         response.addCookie(cookie);
         return tokens;
     }
@@ -47,7 +49,7 @@ public class AuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse registerUser(@ModelAttribute NewUser newUser) {
-        System.out.println(newUser);
+        System.out.println(newUser.avatar().getContentType());
         return userService.saveUser(newUser);
     }
 

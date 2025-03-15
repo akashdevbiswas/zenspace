@@ -1,1 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik+Spray+Paint&display=swap');
+
 @import "tailwindcss";
+
+@theme{
+    --font-*:initial;
+    --font-rubik: 'Rubik Spray Paint', system-ui;
+    --font-roboto: 'Roboto', system-ui;
+    --font-noto: 'Noto Serif', system-ui;
+    --color-*:initial;
+    --color-primary: #930D7A;
+    --color-secondary: #D3D3D3;
+    --color-white: #E0AEE8;
+    --color-base: #EEEEEE;
+    --color-white: #F4F4F4;
+    --color-black: #4C4C4C;
+}
+
+
+body{
+    background-color: var(--color-white);
+    color: var(--color-black);
+}
+
+.heading-large{
+
+}
+.heading-small{
+
+}
+
+.title-large{
+    @apply text-xl font-roboto font-medium;
+}
+.title-small{
+    @apply text-lg font-roboto font-medium;
+}
+.paragraph{
+    @apply text-sm font-roboto font-medium ;
+}
+
+.nav-items{
+    @apply gap-4;
+}
+
+.nav-items a{
+    @apply text-sm font-roboto font-semibold font-medium decoration-0 uppercase;
+}
