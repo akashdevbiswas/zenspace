@@ -1,15 +1,20 @@
 import { Component } from '@angular/core';
+import {
+  Router,
+  RouterLink,
+  RouterLinkActive
+} from '@angular/router';
 import { ButtonComponent } from '../button/button.component';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-navbar',
   imports: [ButtonComponent, RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {
+  constructor(private router: Router) {}
 
-  handler(){
-    console.log('clicked');
+  onClickHandler() {
+    this.router.navigateByUrl('/auth');
   }
-
+  
 }

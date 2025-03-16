@@ -1,5 +1,6 @@
-<header class="w-full pt-6">
+<header class="w-full absolute z-10" [style.top.px]="scrollPosition+20">
   <app-navbar></app-navbar>
 </header>
-
-<router-outlet></router-outlet>
+<main class="h-screen relative mt-20">
+  <router-outlet/>
+</main>

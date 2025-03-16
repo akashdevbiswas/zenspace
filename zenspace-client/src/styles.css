@@ -1,48 +1,72 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik+Spray+Paint&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik+Spray+Paint&display=swap");
 
 @import "tailwindcss";
 
-@theme{
-    --font-*:initial;
-    --font-rubik: 'Rubik Spray Paint', system-ui;
-    --font-roboto: 'Roboto', system-ui;
-    --font-noto: 'Noto Serif', system-ui;
-    --color-*:initial;
-    --color-primary: #930D7A;
-    --color-secondary: #D3D3D3;
-    --color-white: #E0AEE8;
-    --color-base: #EEEEEE;
-    --color-white: #F4F4F4;
-    --color-black: #4C4C4C;
+@theme {
+  --font-rubik: "Rubik Spray Paint", system-ui;
+  --font-roboto: "Roboto", system-ui;
+  --font-noto: "Noto Serif", system-ui;
+  --color-primary: #930d7a;
+  --color-secondary: #d3d3d3;
+  --color-white: #e0aee8;
+  --color-base: #eeeeee;
+  --color-white: #f4f4f4;
+  --color-black: #4c4c4c;
 }
 
-
-body{
-    background-color: var(--color-white);
-    color: var(--color-black);
+body {
+  background-color: var(--color-white);
+  color: var(--color-black);
 }
 
-.heading-large{
-
+.heading-large {
 }
-.heading-small{
-
+.heading-small {
 }
 
-.title-large{
-    @apply text-xl font-roboto font-medium;
+.title-large {
+  @apply text-2xl font-roboto font-semibold;
 }
-.title-small{
-    @apply text-lg font-roboto font-medium;
+.title-small {
+  @apply text-lg font-roboto font-medium;
 }
-.paragraph{
-    @apply text-sm font-roboto font-medium ;
-}
-
-.nav-items{
-    @apply gap-4;
+.paragraph {
+  @apply text-sm font-roboto font-medium;
 }
 
-.nav-items a{
-    @apply text-sm font-roboto font-semibold font-medium decoration-0 uppercase;
+.nav-items {
+  @apply gap-4;
+}
+
+.nav-items a {
+  @apply text-sm font-roboto font-semibold  decoration-0 uppercase;
+}
+
+.active {
+  @apply text-primary font-bold underline underline-offset-4;
+}
+
+.translate-center {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+.flex-center {
+  @apply flex items-center justify-center;
+}
+.flex-items-center {
+  @apply flex items-center;
+}
+
+.form {
+  @apply flex flex-col gap-4 items-center w-full;
+}
+
+.form .input-container {
+  @apply flex flex-col md:flex-row w-full gap-2;
+}
+
+.input {
+  @apply flex flex-col rounded-full px-4 py-1 gap-2 min-h-fit;
+}
+.input-element {
+  @apply outline-none w-auto ;
 }

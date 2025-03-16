@@ -1,1 +1,1 @@
-<button (click)="onClickHandler()" class="cursor-pointer">button works!</button>
+<button (click)="onClick()" [ngClass]="styles[buttonType()]" class="paragraph text-base md:px-4 md:py-2 bg-primary rounded-md cursor-pointer px-3 py-1" [type]="type()">{{name()}}</button>
