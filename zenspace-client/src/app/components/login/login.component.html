@@ -1,24 +1,19 @@
-<div
-  class="flex flex-col gap-4 items-center border border-primary py-4 rounded-2xl bg-amber-200 w-full"
->
+<div class="form-container w-full md:w-10/12 xl:w-2/5">
   <h2 class="title-large text-primary">Log in</h2>
-  <form
-    class="form"
-    (submit)="onSubmit($event)"
-  >
+  <form class="form" (submit)="onSubmit($event)">
     <app-input
-      [label]="'Email'"
+      [label]="'Email or Username'"
       [type]="'email'"
       [placeholder]="'abc@gmail.com'"
       [inputValue]="userForm.email"
-      clasNames="w-full"
+      class="w-full"
     />
     <app-input
       [label]="'Password'"
       [type]="'password'"
       [placeholder]="'!$%^%!&^%^&%'"
       [inputValue]="userForm.password"
-      clasNames="w-full"
+      class="w-full"
     />
     <app-button [buttonType]="'primary'" [name]="'Log in'" [type]="'submit'" />
   </form>

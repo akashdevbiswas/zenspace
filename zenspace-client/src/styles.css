@@ -7,7 +7,7 @@
   --font-roboto: "Roboto", system-ui;
   --font-noto: "Noto Serif", system-ui;
   --color-primary: #930d7a;
-  --color-secondary: #d3d3d3;
+  --color-secondary: #E0AEE8;
   --color-white: #e0aee8;
   --color-base: #eeeeee;
   --color-white: #f4f4f4;
@@ -15,7 +15,7 @@
 }
 
 body {
-  background-color: var(--color-white);
+  background-color: var(--color-base);
   color: var(--color-black);
 }
 
@@ -49,24 +49,34 @@ body {
 .translate-center {
   @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }
-.flex-center {
+.flex-center__row {
   @apply flex items-center justify-center;
+}
+.flex-center__col {
+  @apply flex flex-col items-center justify-center;
 }
 .flex-items-center {
   @apply flex items-center;
 }
 
+.form-container {
+  @apply flex flex-col items-center gap-4 border border-primary rounded-2xl py-5 mx-auto;
+}
+
+.input {
+  @apply rounded-full px-4 py-1 gap-2;
+}
+.input-element {
+  @apply outline-none w-full;
+}
 .form {
   @apply flex flex-col gap-4 items-center w-full;
 }
 
-.form .input-container {
+.form .input-group {
   @apply flex flex-col md:flex-row w-full gap-2;
 }
 
-.input {
-  @apply flex flex-col rounded-full px-4 py-1 gap-2 min-h-fit;
-}
-.input-element {
-  @apply outline-none w-auto ;
+.input-group app-input {
+  @apply w-full;
 }

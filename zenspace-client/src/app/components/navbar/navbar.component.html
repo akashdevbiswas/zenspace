@@ -17,11 +17,13 @@
   </div>
 
   <div id="auth-options" class="flex flex-row gap-2">
+    @if(isAuthenticated()) { }@else {
     <app-button
-      (clicked)="onClickHandler()"
+      (clicked)="router.navigateByUrl(router.url === '/auth/login' ? '/auth/register' : '/auth/login')"
       [buttonType]="'primary'"
-      [name]="'Log in'"
+      [name]="router.url === '/auth/login' ? 'Sign up' : 'Log in'"
     />
+    }
   </div>
   <div id="profile" class="flex items-center flex-row gap-2" [hidden]="true">
     <img src="" alt="" class="w-full" />

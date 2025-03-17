@@ -1,31 +1,98 @@
-<div class="flex flex-col items-center gap-4 bg-amber-200 w-full">
-    <h2 class="title-large text-primary">Sign up</h2>
-    <form (submit)="onSubmit($event)" class="form">
-        <div class="h-[100px] w-[100px] rounded-full flex justify-center items-center overflow-hidden relative bg-base">
-            <label for="avatar" class="w-full h-full z-10"></label>
-            <span class="translate-center">
-                <fa-icon class="text-3xl " [icon]="faAvatar"></fa-icon>
-            </span>
-            <input type="file" name="avatar" id="avatar" hidden>
-            <img [src]="" alt="">
-        </div>
-        <div class="input-container">
-            <app-input [label]="'First name'" [type]="'text'" [placeholder]="'John'" [inputValue]="firstName"></app-input>
-            <app-input [label]="'Last name'" [type]="'text'" [placeholder]="'Doe'" [inputValue]="lastName"></app-input>
-        </div>
-        <div class="input-container">
-            <app-input [label]="'Username'" [type]="'text'" [placeholder]="'Username'" [inputValue]="username"></app-input>
-            <app-input [label]="'Email'" [type]="'email'" [placeholder]="'abc@gmail.com'" [inputValue]="email"></app-input>
-        </div>
-        
-        <div class="input-container">
-            <app-input [label]="'Date of birth'" [type]="'text'" [placeholder]="'Username'" [inputValue]="username"></app-input>
-            <app-input [label]="'Gender'" [type]="'options'" [options]="['Male', 'Female']"  [inputValue]="gender"></app-input>
-        </div>
-        <div class="input-container">
-            <app-input [label]="'Password'" [type]="'password'" [placeholder]="'Username'" [inputValue]="password" [showVisibilityOptions]="true"></app-input>
-            <app-input [label]="'Confirm password'" [type]="'password'" [placeholder]="'abc@gmail.com'" [inputValue]="confirmPassword"></app-input>
-        </div>
-        <app-button [buttonType]="'primary'" [name]="'Sign up'" [type]="'submit'" />
-    </form>
+<div class="form-container w-full md:w-10/12 lg:w-2/3">
+  <h2 class="title-large text-primary">Sign up</h2>
+  <form (submit)="onSubmit($event)" class="form">
+    <div class="flex-center__col gap-3">
+      <div
+        class="h-[75px] w-[75px] rounded-full relative bg-white overflow-hidden"
+      >
+        @if(!avatar){
+        <span class="translate-center">
+          <fa-icon class="text-3xl" [icon]="faAvatar"></fa-icon>
+        </span>
+        }@else {
+        <img
+          [src]="avatarPreview"
+          alt="avatar"
+          class="w-full h-full object-cover translate-center"
+        />
+        }
+        <input
+          type="file"
+          name="avatar"
+          id="avatar"
+          (input)="onFileSelected($event)"
+          class="h-full w-full opacity-0"
+        />
+      </div>
+
+      <div class="flex-center__row gap-4">
+        <label class="paragraph cursor-pointer hover:underline text-secondary" for="avatar"
+          >Upload a profile picture</label
+        >
+        <span [ngClass]="avatar? 'text-red-600 paragraph cursor-pointer hover:underline' : 'text-red-300'" class="" (click)="deleteAvatar()">
+          Delete
+          <fa-icon class="text-cl text-inherit" [icon]="faDelete"></fa-icon>
+        </span>
+      </div>
+    </div>
+    <div class="input-group">
+      <app-input
+        [label]="'First name'"
+        [type]="'text'"
+        [placeholder]="'John'"
+        [inputValue]="firstName"
+      ></app-input>
+      <app-input
+        [label]="'Last name'"
+        [type]="'text'"
+        [placeholder]="'Doe'"
+        [inputValue]="lastName"
+      ></app-input>
+    </div>
+    <div class="input-group">
+      <app-input
+        [label]="'Username'"
+        [type]="'text'"
+        [placeholder]="'Username'"
+        [inputValue]="username"
+      ></app-input>
+      <app-input
+        [label]="'Email'"
+        [type]="'email'"
+        [placeholder]="'abc@gmail.com'"
+        [inputValue]="email"
+      ></app-input>
+    </div>
+
+    <div class="input-group">
+      <app-input
+        [label]="'Date of birth'"
+        [type]="'date'"
+        [placeholder]="'1999-11-27'"
+        [inputValue]="dateOfBirth"
+      ></app-input>
+      <app-input
+        [label]="'Gender'"
+        [type]="'options'"
+        [options]="['Male', 'Female']"
+        [inputValue]="gender"
+      ></app-input>
+    </div>
+    <div class="input-group">
+      <app-input
+        [label]="'Password'"
+        [type]="'password'"
+        [placeholder]="''"
+        [inputValue]="password"
+        [showVisibilityOptions]="true"
+      ></app-input>
+      <app-input
+        [label]="'Confirm password'"
+        [type]="'password'"
+        [placeholder]="''"
+        [inputValue]="confirmPassword"
+      ></app-input>
+    </div>
+    <app-button [buttonType]="'primary'" [name]="'Sign up'" [type]="'submit'" />
+  </form>
 </div>
