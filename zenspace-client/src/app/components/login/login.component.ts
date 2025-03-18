@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { InputComponent } from '../input/input.component';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from '../button/button.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -15,14 +15,13 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
-  userForm = {
+  userCredentials = {
     email: new FormControl(''),
     password: new FormControl(''),
-  };
+  }
 
-  onSubmit(eve: Event) {
-    eve.preventDefault();
-    console.log(this.userForm.email.value);
+  onSubmit() {
+    console.log(this.userCredentials);
   }
 
   faSomeIcon = faUser;

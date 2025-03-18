@@ -12,7 +12,7 @@ export class InputComponent implements OnInit {
   type = input<InputType>('text');
   forInput = `input-${this.label()}`;
   placeholder = input<string>('');
-  inputValue = input.required<FormControl<string | null>>();
+  fcName = input.required<FormControl<string | null>>();
   icon = input<HTMLSpanElement>();
   options = input<string[]>();
   showVisibilityOptions = input<boolean>(false);

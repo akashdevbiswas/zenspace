@@ -4,7 +4,11 @@
     class="border border-primary px-3 py-1 rounded-full paragraph flex flex-row justify-between w-full bg-white"
   >
     @if(type() === 'options') {
-    <select class="input-element" [formControl]="inputValue()" [required]="required()">
+    <select
+      class="input-element"
+      [formControl]="fcName()"
+      [required]="required()"
+    >
       <option disabled selected [defaultSelected]="true">{{ label() }}</option>
       @for (options of options(); track $index) {
       <option class="paragraph">{{ options }}</option>
@@ -17,9 +21,8 @@
       [id]="label()"
       [placeholder]="placeholder()"
       class="input-element w-full"
-      [formControl]="inputValue()"
+      [formControl]="fcName()"
       [required]="required()"
-      
     />
     } @if(type() === 'password' && showVisibilityOptions()) {
     <span class="cursor-pointer w-fit" (click)="onVisibilityChange()"

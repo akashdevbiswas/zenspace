@@ -5,12 +5,16 @@ import {
   RouterLinkActive
 } from '@angular/router';
 import { ButtonComponent } from '../button/button.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
+import { NgOptimizedImage } from '@angular/common';
 @Component({
   selector: 'app-navbar',
-  imports: [ButtonComponent, RouterLink, RouterLinkActive],
+  imports: [ButtonComponent, RouterLink, RouterLinkActive, FontAwesomeModule, NgOptimizedImage],
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent  {
+  notificationBell = faBell;
   constructor(protected router: Router) {
     console.log(this.router.url);
   }

@@ -26,10 +26,20 @@
       </div>
 
       <div class="flex-center__row gap-4">
-        <label class="paragraph cursor-pointer hover:underline text-secondary" for="avatar"
+        <label
+          class="paragraph cursor-pointer hover:underline text-secondary"
+          for="avatar"
           >Upload a profile picture</label
         >
-        <span [ngClass]="avatar? 'text-red-600 paragraph cursor-pointer hover:underline' : 'text-red-300'" class="" (click)="deleteAvatar()">
+        <span
+          [ngClass]="
+            avatar
+              ? 'text-red-600 paragraph cursor-pointer hover:underline'
+              : 'text-red-300'
+          "
+          class=""
+          (click)="deleteAvatar()"
+        >
           Delete
           <fa-icon class="text-cl text-inherit" [icon]="faDelete"></fa-icon>
         </span>
@@ -40,13 +50,13 @@
         [label]="'First name'"
         [type]="'text'"
         [placeholder]="'John'"
-        [inputValue]="firstName"
+        [fcName]="firstName"
       ></app-input>
       <app-input
         [label]="'Last name'"
         [type]="'text'"
         [placeholder]="'Doe'"
-        [inputValue]="lastName"
+        [fcName]="lastName"
       ></app-input>
     </div>
     <div class="input-group">
@@ -54,13 +64,13 @@
         [label]="'Username'"
         [type]="'text'"
         [placeholder]="'Username'"
-        [inputValue]="username"
+        [fcName]="username"
       ></app-input>
       <app-input
         [label]="'Email'"
         [type]="'email'"
         [placeholder]="'abc@gmail.com'"
-        [inputValue]="email"
+        [fcName]="email"
       ></app-input>
     </div>
 
@@ -69,28 +79,27 @@
         [label]="'Date of birth'"
         [type]="'date'"
         [placeholder]="'1999-11-27'"
-        [inputValue]="dateOfBirth"
+        [fcName]="dateOfBirth"
       ></app-input>
       <app-input
         [label]="'Gender'"
         [type]="'options'"
         [options]="['Male', 'Female']"
-        [inputValue]="gender"
+        [fcName]="gender"
       ></app-input>
     </div>
     <div class="input-group">
       <app-input
         [label]="'Password'"
         [type]="'password'"
-        [placeholder]="''"
-        [inputValue]="password"
+        [placeholder]="'%@*&^*&^*@&'"
+        [fcName]="password"
         [showVisibilityOptions]="true"
       ></app-input>
       <app-input
         [label]="'Confirm password'"
         [type]="'password'"
-        [placeholder]="''"
-        [inputValue]="confirmPassword"
+        [fcName]="confirmPassword"
       ></app-input>
     </div>
     <app-button [buttonType]="'primary'" [name]="'Sign up'" [type]="'submit'" />
