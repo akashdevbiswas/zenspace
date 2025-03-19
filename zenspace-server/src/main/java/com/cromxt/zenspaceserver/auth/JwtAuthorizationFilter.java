@@ -30,7 +30,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String requestPath = request.getRequestURI();
 
-
+        if(requestPath.startsWith("/images")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         if(requestPath.startsWith("/api/v1/auth")) {
             if(requestPath.equals("/api/v1/auth/refresh")) {
                 Cookie[] cookies = request.getCookies();

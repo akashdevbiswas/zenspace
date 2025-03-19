@@ -54,8 +54,14 @@ export default class AuthService {
     });
   }
 
-  setToken(value: string | null) {
-    this.token = value;
+  getAuthorization() :string | null { 
+      return this.token
+  }
+
+
+  
+  fetchUserAvatars(){
+    return this.http.get<string[]>('/api/v1/auth/avatars')
   }
 }
 

@@ -6,12 +6,16 @@ import com.cromxt.zenspaceserver.dtos.request.UserCredential;
 import com.cromxt.zenspaceserver.dtos.response.AuthTokens;
 import com.cromxt.zenspaceserver.dtos.response.UserResponse;
 import com.cromxt.zenspaceserver.service.AuthService;
+import com.cromxt.zenspaceserver.service.EntityMapper;
 import com.cromxt.zenspaceserver.service.UserService;
+import com.cromxt.zenspaceserver.service.UtilService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -20,6 +24,7 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthService authService;
+    private final UtilService utilService;
 
 
     @PostMapping
@@ -50,6 +55,11 @@ public class AuthController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse registerUser(@ModelAttribute NewUser newUser) {
         return userService.saveUser(newUser);
+    }
+
+    @GetMapping("/avatars")
+    public List<String> getAllAvailableAvatars(){
+        return utilService.getAllAvailableAvatars();
     }
 
 }
