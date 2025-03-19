@@ -49,7 +49,6 @@ public class AuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse registerUser(@ModelAttribute NewUser newUser) {
-        System.out.println(newUser.avatar().getContentType());
         return userService.saveUser(newUser);
     }
 

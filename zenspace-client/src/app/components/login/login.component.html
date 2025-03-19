@@ -1,18 +1,18 @@
 <div class="form-container w-full md:w-10/12 xl:w-2/5">
   <h2 class="title-large text-primary">Log in</h2>
-  <form class="form" (ngSubmit)="onSubmit()">
+  <form class="form" (submit)="onSubmit($event)">
     <app-input
       [label]="'Email or Username'"
       [type]="'email'"
       [placeholder]="'abc@gmail.com'"
-      [fcName]="userCredentials.email"
+      [fcName]="email"
       class="w-full"
     />
     <app-input
       [label]="'Password'"
       [type]="'password'"
       [placeholder]="'!$%^%!&^%^&%'"
-      [fcName]="userCredentials.password"
+      [fcName]="password"
       class="w-full"
     />
     <app-button [buttonType]="'primary'" [name]="'Log in'" [type]="'submit'" />

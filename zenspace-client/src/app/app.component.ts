@@ -1,23 +1,22 @@
 import { Component, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { NgClass } from '@angular/common';
+import AuthService from './service/auth.service';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,NavbarComponent],
+  imports: [RouterOutlet, NavbarComponent],
   templateUrl: './app.component.html',
 })
-export class AppComponent {
-
+export class AppComponent  {
   scrollPosition = 0;
 
+  constructor(private authService: AuthService) {}
+
   @HostListener('window:scroll', ['$event'])
-  onScroll(_:Event):void{
+  onScroll(_: Event): void {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     this.scrollPosition = scrollTop;
   }
-
-  
-
 }
