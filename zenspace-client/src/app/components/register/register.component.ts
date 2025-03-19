@@ -65,6 +65,7 @@ export class RegisterComponent implements OnInit {
         password: this.password.value,
         gender: this.gender.value,
         dateOfBirth: this.dateOfBirth.value,
+        avatarUrl: null
       };
 
       this.authService.register(newUser).subscribe((response) => {
@@ -97,16 +98,23 @@ export class RegisterComponent implements OnInit {
   currentAvatarIndex = 0;
   translateX = 0;
 
-
-  onSlideRight() {
-    this.translateX-= 83;
-    this.currentAvatarIndex++;
-  }
-
   onSlideLeft(){
+    if(this.currentAvatarIndex === 0) return
     this.translateX+= 83
     this.currentAvatarIndex--;
   }
 
+  onClickAvatar(index: number) {
+    console.log("Clicked avatar index:", index);
+    this.currentAvatarIndex = index;
+    this.translateX = -83 * index;
+  }
+
+  onSlideRight(totalLength: number){
+    if(this.currentAvatarIndex > totalLength) return
+    this.translateX-= 83;
+    this.currentAvatarIndex++;
+    console.log(totalLength , this.currentAvatarIndex)
+  }
   
 }

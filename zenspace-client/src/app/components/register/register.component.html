@@ -2,10 +2,12 @@
   <h2 class="title-large text-primary">Sign up</h2>
   <form (submit)="onSubmit($event)" class="form">
     <div class="flex-center__col gap-3 w-full overflow-hidden relative">
+      @if(avatars$ | async; as avatarsList){
+      <!-- This is the left and right buttons -->
       <div
-        class="absolute right-0 h-full w-4/12 z-10 flex items-center justify-end px-4 bg-gradient-to-r from-transparent  to-base to-80% "
+        class="absolute right-0 h-full w-2/12 z-10 flex items-center justify-end px-4 bg-gradient-to-r from-transparent to-base to-80%"
       >
-        <span (click)="onSlideRight()"
+        <span (click)="onSlideRight(avatarsList.length + 1)"
           ><fa-icon
             class="cursor-pointer text-6xl text-primary opacity-100"
             [icon]="faChevronRight"
@@ -13,7 +15,7 @@
         ></span>
       </div>
       <div
-        class="absolute left-0 h-full w-4/12 z-10 flex items-center justify-start px-4 bg-gradient-to-r from-base from-20% to-transparent "
+        class="absolute left-0 h-full w-2/12 z-10 flex items-center justify-start px-4 bg-gradient-to-r from-base from-20% to-transparent"
       >
         <span (click)="onSlideLeft()"
           ><fa-icon
@@ -22,13 +24,20 @@
           ></fa-icon
         ></span>
       </div>
+      <!-- This is the avatars list -->
       <div
         class="flex-center__row w-fit py-2 gap-2 translate-x-[296px] transition-transform duration-300 ease-in-out"
         [style]="{ transform: 'translateX(' + translateX + 'px)' }"
       >
-        @for (avatar of avatars$ | async; track $index) {
+        @for (avatar of avatarsList; track $index) {
         <div
-          class="h-[75px] w-[75px] rounded-full relative bg-white overflow-hidden cursor-pointer"
+          (click)="onClickAvatar($index)"
+          class="h-[75px] w-[75px] rounded-full relative bg-white overflow-hidden cursor-pointer transition-all duration-300 ease-in-out"
+          [ngClass]="
+            currentAvatarIndex === $index
+              ? 'border border-primary scale-125 m-2'
+              : ''
+          "
         >
           <img
             [src]="avatar"
@@ -37,7 +46,13 @@
           />
         </div>
         }
+        <!-- This is custom avatar for the profile picture  -->
         <div
+          [ngClass]="
+            currentAvatarIndex === avatarsList.length
+              ? 'border border-primary scale-125 m-2'
+              : ''
+          "
           class="h-[75px] w-[75px] rounded-full relative bg-white overflow-hidden"
         >
           @if(!avatar){
@@ -60,9 +75,9 @@
           />
         </div>
       </div>
-
-      <div class="flex-center__row gap-4">
+      <!-- <div class="flex-center__row gap-4">
         <label
+          (click)="onClickAvatar(avatarsList.length)"
           class="paragraph cursor-pointer hover:underline text-secondary"
           for="avatar"
           >Upload a profile picture</label
@@ -79,7 +94,8 @@
           Delete
           <fa-icon class="text-cl text-inherit" [icon]="faDelete"></fa-icon>
         </span>
-      </div>
+      </div> -->
+      }
     </div>
     <div class="input-group">
       <app-input

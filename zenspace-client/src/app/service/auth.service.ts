@@ -74,4 +74,5 @@ export interface NewUser {
   password: string;
   gender: string;
   dateOfBirth: string;
+  avatarUrl: string|null;
 }
