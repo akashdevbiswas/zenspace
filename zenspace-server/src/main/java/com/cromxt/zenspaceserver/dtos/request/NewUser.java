@@ -10,6 +10,7 @@ public record NewUser(
         String lastName,
         String dateOfBirth,
         String gender,
-        MultipartFile avatar
+        MultipartFile profileImage,
+        Integer avatar
 ){
 }

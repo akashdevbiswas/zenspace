@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class UtilServiceImpl implements UtilService {
     private static final String[] DEFAULT_AVATARS = {
-            "gary.png",
+            "default.png",
             "hello-kitty.png",
             "jerry.png",
             "patrick.png",
@@ -18,10 +18,29 @@ public class UtilServiceImpl implements UtilService {
             "squid-ward.png",
             "shiro.png"
     };
+
     @Override
     public List<String> getAllAvailableAvatars() {
-        String hostname= "http://localhost:8901";
-        return Arrays.stream(DEFAULT_AVATARS).map(avatar -> String.format("%s/images/%s", hostname,avatar)).toList();
+        return Arrays.stream(DEFAULT_AVATARS).map(this::generateAvatarUrl).toList();
     }
+
+    @Override
+    public String getDefaultAvatarUrl() {
+        return generateAvatarUrl(DEFAULT_AVATARS[0]);
+    }
+
+    @Override
+    public String getAvatarUrlByIndex(int index) {
+        if(DEFAULT_AVATARS.length <=  index) {
+            return getDefaultAvatarUrl();
+        }
+        return generateAvatarUrl(DEFAULT_AVATARS[index]);
+    }
+
+    private String generateAvatarUrl(String avatar) {
+        String hostname= "http://localhost:8901";
+        return String.format("%s/images/%s", hostname,avatar);
+    }
+
 
 }

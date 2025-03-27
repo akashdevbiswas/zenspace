@@ -26,7 +26,7 @@
       </div>
       <!-- This is the avatars list -->
       <div
-        class="flex-center__row w-fit py-2 gap-2 translate-x-[296px] transition-transform duration-300 ease-in-out"
+        class="flex-center__row w-fit h-[110px] py-2 gap-2 translate-x-[296px] transition-transform duration-300 ease-in-out"
         [style]="{ transform: 'translateX(' + translateX + 'px)' }"
       >
         @for (avatar of avatarsList; track $index) {
@@ -48,6 +48,7 @@
         }
         <!-- This is custom avatar for the profile picture  -->
         <div
+          (click)="onClickAvatar(avatarsList.length)"
           [ngClass]="
             currentAvatarIndex === avatarsList.length
               ? 'border border-primary scale-125 m-2'
@@ -55,7 +56,7 @@
           "
           class="h-[75px] w-[75px] rounded-full relative bg-white overflow-hidden"
         >
-          @if(!avatar){
+          @if(typeof avatar !== 'object') {
           <span class="translate-center">
             <fa-icon class="text-3xl" [icon]="faAvatar"></fa-icon>
           </span>
@@ -75,26 +76,6 @@
           />
         </div>
       </div>
-      <!-- <div class="flex-center__row gap-4">
-        <label
-          (click)="onClickAvatar(avatarsList.length)"
-          class="paragraph cursor-pointer hover:underline text-secondary"
-          for="avatar"
-          >Upload a profile picture</label
-        >
-        <span
-          [ngClass]="
-            avatar
-              ? 'text-red-600 paragraph cursor-pointer hover:underline'
-              : 'text-red-300'
-          "
-          class=""
-          (click)="deleteAvatar()"
-        >
-          Delete
-          <fa-icon class="text-cl text-inherit" [icon]="faDelete"></fa-icon>
-        </span>
-      </div> -->
       }
     </div>
     <div class="input-group">
@@ -152,6 +133,7 @@
         [label]="'Confirm password'"
         [type]="'password'"
         [fcName]="confirmPassword"
+        [isError]="isPasswordError"
       ></app-input>
     </div>
     <app-button [buttonType]="'primary'" [name]="'Sign up'" [type]="'submit'" />

@@ -1,10 +1,11 @@
+import { NgClass } from '@angular/common';
 import { Component, input, OnInit, output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-input',
-  imports: [ReactiveFormsModule, FontAwesomeModule],
+  imports: [ReactiveFormsModule, FontAwesomeModule,NgClass],
   templateUrl: './input.component.html',
 })
 export class InputComponent implements OnInit {
@@ -20,6 +21,7 @@ export class InputComponent implements OnInit {
   maxLength = input<number>(100);
   minLength = input<number>(5);
   required = input<boolean>(false);
+  isError = input<boolean>(false);
 
   inputType: InputType = this.type();
   iconVisibility = true;

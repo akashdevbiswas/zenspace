@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
   
 
-  avatar: null | File = null;
+  avatar: number | File = 0;
   firstName = new FormControl('');
   lastName = new FormControl<string>('');
   username = new FormControl<string>('');
@@ -36,6 +36,8 @@ export class RegisterComponent implements OnInit {
 
   confirmPassword = new FormControl('');
 
+  isPasswordError = false;
+
   isImageSelected = true;
 
   avatarPreview: null | ArrayBuffer | string = null;
@@ -44,8 +46,18 @@ export class RegisterComponent implements OnInit {
     this.avatars$ = this.authService.fetchUserAvatars()
   }
 
+  isPasswordMatch() {
+    return this.password.value === this.confirmPassword.value;
+  }
+
+
   onSubmit(eve: Event) {
     eve.preventDefault();
+
+    if(!this.isPasswordMatch()){
+      this.isPasswordError = true;
+      return;
+    }
 
     if (
       this.firstName.value &&
@@ -64,8 +76,7 @@ export class RegisterComponent implements OnInit {
         username: this.username.value,
         password: this.password.value,
         gender: this.gender.value,
-        dateOfBirth: this.dateOfBirth.value,
-        avatarUrl: null
+        dateOfBirth: this.dateOfBirth.value
       };
 
       this.authService.register(newUser).subscribe((response) => {
@@ -76,20 +87,13 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  deleteAvatar() {
-    if (!this.avatar) {
-      return;
-    }
-    this.avatar = null;
-  }
-
   onFileSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       this.avatar = file;
       const reader = new FileReader();
       reader.onload = (e) => {
-        if (e.target) this.avatarPreview = e.target.result; // Make the image visible
+        if (e.target) this.avatarPreview = e.target.result;
       };
       reader.readAsDataURL(this.avatar);
     }
@@ -102,19 +106,20 @@ export class RegisterComponent implements OnInit {
     if(this.currentAvatarIndex === 0) return
     this.translateX+= 83
     this.currentAvatarIndex--;
+    this.avatar = this.currentAvatarIndex;
   }
 
   onClickAvatar(index: number) {
-    console.log("Clicked avatar index:", index);
     this.currentAvatarIndex = index;
     this.translateX = -83 * index;
+    this.avatar = this.currentAvatarIndex;
   }
 
   onSlideRight(totalLength: number){
     if(this.currentAvatarIndex > totalLength) return
     this.translateX-= 83;
     this.currentAvatarIndex++;
-    console.log(totalLength , this.currentAvatarIndex)
+    this.avatar = this.currentAvatarIndex;
   }
   
 }

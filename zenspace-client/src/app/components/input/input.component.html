@@ -2,6 +2,7 @@
   <label class="pl-2 title-small" [for]="forInput">{{ label() }}</label>
   <div
     class="border border-primary px-3 py-1 rounded-full paragraph flex flex-row justify-between w-full bg-white"
+    [ngClass]="isError() ? 'border-red-700 border-2' : ''"
   >
     @if(type() === 'options') {
     <select
@@ -23,6 +24,8 @@
       class="input-element w-full"
       [formControl]="fcName()"
       [required]="required()"
+      [maxLength]="maxLength()"
+      [minLength]="minLength()"
     />
     } @if(type() === 'password' && showVisibilityOptions()) {
     <span class="cursor-pointer w-fit" (click)="onVisibilityChange()"

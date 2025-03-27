@@ -30,9 +30,9 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private String password;
-    private String avatar;
-    @Column(name = "avatar_id")
-    private String avatarId;
+    private String avatarUrl;
+    @Column(name = "media_id")
+    private String mediaId;
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
     @CreationTimestamp

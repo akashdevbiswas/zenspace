@@ -19,7 +19,11 @@ export default class AuthService {
     let key: keyof NewUser;
     for (key in user) {
       const value = user[key];
-      if (value !== null) {
+      if (key === 'avatar' && typeof value === 'object') {
+        formData.append('profileImage', value);
+      }else if(key ==='avatar' && typeof value === 'number'){
+        formData.append('avatar', value.toString());
+      }else if(key !== 'avatar' && typeof value === 'string'){
         formData.append(key, value);
       }
     }
@@ -54,19 +58,17 @@ export default class AuthService {
     });
   }
 
-  getAuthorization() :string | null { 
-      return this.token
+  getAuthorization(): string | null {
+    return this.token;
   }
 
-
-  
-  fetchUserAvatars(){
-    return this.http.get<string[]>('/api/v1/auth/avatars')
+  fetchUserAvatars() {
+    return this.http.get<string[]>('/api/v1/auth/avatars');
   }
 }
 
 export interface NewUser {
-  avatar: null | File;
+  avatar: number | File;
   firstName: string;
   lastName: string;
   email: string;
@@ -74,5 +76,4 @@ export interface NewUser {
   password: string;
   gender: string;
   dateOfBirth: string;
-  avatarUrl: string|null;
 }
