@@ -12,12 +12,12 @@ import com.cromxt.zenspaceserver.service.EntityMapper;
 import com.cromxt.zenspaceserver.service.JWTService;
 import com.cromxt.zenspaceserver.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -48,11 +48,11 @@ public class UserServiceImpl implements AuthService, UserService {
 
     @Override
     public AuthTokens generateAccessToken(String refreshToken) {
-        String userId = jwtService.extractUsername(refreshToken);
+        UUID userId = UUID.fromString(jwtService.extractUsername(refreshToken));
 
         Optional<UserEntity> savedUserOptional = userRepository.findById(userId);
 
-        UserEntity savedUser = savedUserOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        UserEntity savedUser = savedUserOptional.orElseThrow(() -> new UserNotFoundException("User not found"));
 
         String newAccessToken = jwtService.generateAccessToken(savedUser.getId().toString(), new HashMap<>());
         return new AuthTokens(newAccessToken, refreshToken);

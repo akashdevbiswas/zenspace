@@ -19,20 +19,25 @@
   }
 
   <div class="flex items-center flex-row gap-12">
-    @if(isAuthenticated()) {
-    <span class="cursor-pointer"><fa-icon [icon]="notificationBell" class="text-2xl"></fa-icon></span>
-    <div id="profile" class="flex items-center flex-row gap-2 w-fit cursor-pointer">
+    @if(isAuthenticated()) { @if( ( user$ | async); as user){
+    <span class="cursor-pointer"
+      ><fa-icon [icon]="notificationBell" class="text-2xl"></fa-icon
+    ></span>
+    <div
+      id="profile"
+      class="flex items-center flex-row gap-2 w-fit cursor-pointer"
+    >
       <div class="h-10 w-10 relative rounded-full overflow-hidden">
         <img
-          ngSrc="https://images.unsplash.com/photo-1553782376-b2e8256ab838?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHJhdyUyMHBvcnRyYWl0fGVufDB8fDB8fHww"
+          [ngSrc]="user.data.avatar"
           alt="avatar"
           [fill]="true"
           class="h-full object-cover rounde-full"
         />
       </div>
-      <p class="min-w-fit paragraph">Username</p>
+      <p class="min-w-fit paragraph">{{ user.data.username }}</p>
     </div>
-    }@else {
+    } }@else {
     <app-button
       (clicked)="
         router.navigateByUrl(

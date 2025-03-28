@@ -6,7 +6,6 @@ import com.cromxt.zenspaceserver.dtos.request.UserCredential;
 import com.cromxt.zenspaceserver.dtos.response.AuthTokens;
 import com.cromxt.zenspaceserver.dtos.response.UserResponse;
 import com.cromxt.zenspaceserver.service.AuthService;
-import com.cromxt.zenspaceserver.service.EntityMapper;
 import com.cromxt.zenspaceserver.service.UserService;
 import com.cromxt.zenspaceserver.service.UtilService;
 import jakarta.servlet.http.Cookie;

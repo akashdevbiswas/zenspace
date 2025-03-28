@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
+import { BaseResponse } from './http-constants.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export default class AuthService {
-  private token: string | null = null;
+  private token = signal<null | string>(null);
   constructor(private http: HttpClient) {
     this.refreshAccessToken().subscribe((res) => {
       if (res.body && res.body.accessToken) {
-        this.token = res.body.accessToken;
+        this.token.set(res.body.accessToken);
       }
     });
   }
@@ -21,9 +22,9 @@ export default class AuthService {
       const value = user[key];
       if (key === 'avatar' && typeof value === 'object') {
         formData.append('profileImage', value);
-      }else if(key ==='avatar' && typeof value === 'number'){
+      } else if (key === 'avatar' && typeof value === 'number') {
         formData.append('avatar', value.toString());
-      }else if(key !== 'avatar' && typeof value === 'string'){
+      } else if (key !== 'avatar' && typeof value === 'string') {
         formData.append(key, value);
       }
     }
@@ -32,14 +33,12 @@ export default class AuthService {
     });
   }
 
-  login(userCredentials: { username: string; password: string }) {
-    return this.http.post<{ accessToken: string; refreshToken: string }>(
-      '/api/v1/auth',
-      userCredentials,
-      {
-        observe: 'response',
-      }
-    );
+  login(userCredentials: { usernameOrEmail: string; password: string }) {
+    return this.http.post<
+      BaseResponse<{ accessToken: string; refreshToken: string }>
+    >('/api/v1/auth', userCredentials, {
+      observe: 'response',
+    });
   }
 
   refreshAccessToken() {
@@ -59,6 +58,10 @@ export default class AuthService {
   }
 
   getAuthorization(): string | null {
+    return this.token();
+  }
+
+  getAuthorizationSignal():WritableSignal<null | string> {
     return this.token;
   }
 

@@ -5,6 +5,7 @@ import { ButtonComponent } from '../button/button.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import AuthService from '../../service/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   imports: [
@@ -16,24 +17,29 @@ import AuthService from '../../service/auth.service';
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  email = new FormControl('');
+  usernameOrEmail = new FormControl('');
   password = new FormControl('');
 
   onSubmit(eve: Event) {
     eve.preventDefault();
 
-    if (this.email.value && this.password.value) {
-      this.authService.login({
-        username: this.email.value,
-        password: this.password.value,
-      }).subscribe(
-        (response) => {
-        if(response.status === 201){
-          
-        }
-      });
+    if (this.usernameOrEmail.value && this.password.value) {
+      this.authService
+        .login({
+          usernameOrEmail: this.usernameOrEmail.value,
+          password: this.password.value,
+        })
+        .subscribe((response) => {
+          const { status } = response;
+          if (status === 201) {
+            this.router.navigateByUrl('/home', { skipLocationChange: true }).then(() => {
+              localStorage.removeItem('reloaded');
+              window.location.reload();
+            });
+          }
+        });
     }
   }
 

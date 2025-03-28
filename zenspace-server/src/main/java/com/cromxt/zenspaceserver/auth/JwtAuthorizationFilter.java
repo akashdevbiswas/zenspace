@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -41,7 +42,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     buildResponse(response, "Invalid cookie.", HttpServletResponse.SC_FORBIDDEN);
                     return;
                 }
-                Optional<Cookie> refreshToken = Arrays.stream(cookies).filter(cookie -> cookie.getName().equals("refreshToken")).findFirst();
+                Optional<Cookie> refreshToken = Arrays.stream(cookies).filter(cookie -> cookie.getName().equals("refreshToken") && Objects.nonNull(cookie.getValue()) && !cookie.getValue().isEmpty()).findFirst();
                 if(refreshToken.isEmpty()) {
                     buildResponse(response, "No refresh token found.", HttpServletResponse.SC_FORBIDDEN);
                     return;
@@ -59,16 +60,16 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        Optional<String> userIdFromTheRequest = getTheUserIdFromTheRequest(requestPath);
-
-        if(userIdFromTheRequest.isEmpty()){
-            buildResponse(response, "Invalid request.", HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
-
-        String userId = userIdFromTheRequest.get();
+//        Optional<String> userIdFromTheRequest = getTheUserIdFromTheRequest(requestPath);
+//
+//        if(userIdFromTheRequest.isEmpty()){
+//            buildResponse(response, "Invalid request.", HttpServletResponse.SC_FORBIDDEN);
+//            return;
+//        }
 
         String token = request.getHeader("Authorization");
+        System.out.println(token);
+
         if(token == null || !token.startsWith("Bearer ")) {
             buildResponse(response, "You are not allowed to use this endpoint.", HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -76,11 +77,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String jwtToken = token.substring(7);
 
-        if(!jwtService.isTokenValid(jwtToken, userId)) {
+        if(!jwtService.isTokenValid(jwtToken)) {
             buildResponse(response, "Unauthorized", HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
+        String userId = jwtService.extractUsername(jwtToken);
+        request.setAttribute("userId", userId);
         filterChain.doFilter(request, response);
     }
 

@@ -56,6 +56,12 @@ public class JWTServiceImpl implements JWTService {
     public String generateRefreshToken(String username) {
         return buildToken(new HashMap<>(),username,refreshTokenExpiration);
     }
+
+    @Override
+    public Boolean isTokenValid(String token) {
+        return extractExpiration(token).after(new Date());
+    }
+
     @Override
     public Boolean isTokenValid(String token, String currentUser) {
         final String username = extractUsername(token);
