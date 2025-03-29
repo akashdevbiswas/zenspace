@@ -33,11 +33,18 @@ export class LoginComponent {
         })
         .subscribe((response) => {
           const { status } = response;
-          if (status === 201) {
-            this.router.navigateByUrl('/home', { skipLocationChange: true }).then(() => {
-              localStorage.removeItem('reloaded');
-              window.location.reload();
-            });
+          if (status === 201 && response.body) {
+            const {accessToken} = response.body;
+            if(accessToken){
+              this.authService.setAuthorization(accessToken);
+              this.router.navigateByUrl('/home');
+            }else{
+              // Some error occurred at server side, handle that error.
+              console.error('Some error occurred at server side.')
+              return;
+            }
+          }else if(status === 401){
+            // Handle other cases.
           }
         });
     }

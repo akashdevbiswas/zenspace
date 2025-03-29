@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { BaseResponse } from './http-constants.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export default class AuthService {
   private token = signal<null | string>(null);
+
   constructor(private http: HttpClient) {
     this.refreshAccessToken().subscribe((res) => {
       if (res.body && res.body.accessToken) {
@@ -34,11 +34,13 @@ export default class AuthService {
   }
 
   login(userCredentials: { usernameOrEmail: string; password: string }) {
-    return this.http.post<
-      BaseResponse<{ accessToken: string; refreshToken: string }>
-    >('/api/v1/auth', userCredentials, {
-      observe: 'response',
-    });
+    return this.http.post<{ accessToken: string; refreshToken: string }>(
+      '/api/v1/auth',
+      userCredentials,
+      {
+        observe: 'response',
+      }
+    );
   }
 
   refreshAccessToken() {
@@ -61,12 +63,15 @@ export default class AuthService {
     return this.token();
   }
 
-  getAuthorizationSignal():WritableSignal<null | string> {
+  getAuthorizationSignal(): WritableSignal<null | string> {
     return this.token;
   }
 
   fetchUserAvatars() {
     return this.http.get<string[]>('/api/v1/auth/avatars');
+  }
+  setAuthorization(token: string) {
+    this.token.set(token);
   }
 }
 

@@ -27,7 +27,7 @@ class JWTServiceImplTest {
 
 
         String token = jwtService.generateAccessToken("username", new HashMap<>());
-        String username = jwtService.extractUsername(token);
+        String username = jwtService.extractSubject(token);
 
         System.out.println(token);
 

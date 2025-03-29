@@ -67,21 +67,24 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 //            return;
 //        }
 
-        String token = request.getHeader("Authorization");
-        System.out.println(token);
+        String authorization = request.getHeader("Authorization");
+        if(authorization == null || !authorization.startsWith("Bearer ")) {
+            buildResponse(response, "You are not authorized.", HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
 
-        if(token == null || !token.startsWith("Bearer ")) {
+        String token = authorization.substring(7);
+
+        if(token.isEmpty()) {
             buildResponse(response, "You are not allowed to use this endpoint.", HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
-        String jwtToken = token.substring(7);
-
-        if(!jwtService.isTokenValid(jwtToken)) {
+        if(!jwtService.isTokenValid(token)) {
             buildResponse(response, "Unauthorized", HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-        String userId = jwtService.extractUsername(jwtToken);
+        String userId = jwtService.extractSubject(token);
         request.setAttribute("userId", userId);
         filterChain.doFilter(request, response);
     }

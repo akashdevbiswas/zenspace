@@ -6,5 +6,7 @@ import com.cromxt.zenspaceserver.entity.UserEntity;
 
 public interface UserService {
 
-    UserResponse saveUser(NewUser newUser);
+    UserEntity saveUser(NewUser newUser);
+
+    UserEntity getUserById(String userId);
 }

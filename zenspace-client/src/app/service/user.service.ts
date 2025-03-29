@@ -10,9 +10,9 @@ import { BaseResponse } from "./http-constants.service";
 export default class UserService {
     constructor(private http: HttpClient, private auth: AuthService) {}
 
-
     getUser() {
-        return this.http.get<BaseResponse<User>>('/api/v1/user',{
+        return this.http.get<User>('/api/v1/users',{
+            observe: 'response',
             headers:{
                 'Authorization': 'Bearer '+this.auth.getAuthorization()
             }

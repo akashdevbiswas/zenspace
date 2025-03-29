@@ -1,9 +1,9 @@
-import { Component, computed, OnInit, Signal } from '@angular/core';
+import { Component, computed, effect, OnInit, Signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ButtonComponent } from '../button/button.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, NgIf, NgOptimizedImage } from '@angular/common';
 import UserService, { User } from '../../service/user.service';
 import AuthService from '../../service/auth.service';
 import { Observable } from 'rxjs';
@@ -16,28 +16,31 @@ import { BaseResponse } from '../../service/http-constants.service';
     RouterLinkActive,
     FontAwesomeModule,
     NgOptimizedImage,
-    AsyncPipe
   ],
   templateUrl: './navbar.component.html',
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   notificationBell = faBell;
 
-  isAuthenticated: Signal<string | null>;
-  user$!: Observable<BaseResponse<User>>;
+  user: User | null = null;
 
   constructor(
     protected router: Router,
     private userService: UserService,
-    private authService: AuthService
+    protected authService: AuthService
   ) {
-    this.isAuthenticated = computed(() => {
-      const authenticationSignal = this.authService.getAuthorizationSignal();
-      return authenticationSignal();
+    effect(() => {
+      const authorization = this.authService.getAuthorizationSignal();
+      if (authorization()) {
+        this.userService.getUser().subscribe((res) => {
+          if (res.status === 200 && res.body) {
+            this.user = res.body;
+          } else {
+            this.router.navigateByUrl('/auth');
+          }
+        });
+      }
     });
-  }
-  ngOnInit(): void {
-    this.user$ = this.userService.getUser();
   }
 
   onClickHandler() {

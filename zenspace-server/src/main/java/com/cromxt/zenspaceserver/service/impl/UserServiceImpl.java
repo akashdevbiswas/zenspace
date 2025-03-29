@@ -3,7 +3,6 @@ package com.cromxt.zenspaceserver.service.impl;
 import com.cromxt.zenspaceserver.dtos.request.NewUser;
 import com.cromxt.zenspaceserver.dtos.request.UserCredential;
 import com.cromxt.zenspaceserver.dtos.response.AuthTokens;
-import com.cromxt.zenspaceserver.dtos.response.UserResponse;
 import com.cromxt.zenspaceserver.entity.UserEntity;
 import com.cromxt.zenspaceserver.exceptions.UserNotFoundException;
 import com.cromxt.zenspaceserver.respository.UserRepository;
@@ -48,7 +47,7 @@ public class UserServiceImpl implements AuthService, UserService {
 
     @Override
     public AuthTokens generateAccessToken(String refreshToken) {
-        UUID userId = UUID.fromString(jwtService.extractUsername(refreshToken));
+        UUID userId = UUID.fromString(jwtService.extractSubject(refreshToken));
 
         Optional<UserEntity> savedUserOptional = userRepository.findById(userId);
 
@@ -59,10 +58,14 @@ public class UserServiceImpl implements AuthService, UserService {
     }
 
     @Override
-    public UserResponse saveUser(NewUser newUser) {
+    public UserEntity saveUser(NewUser newUser) {
         UserEntity userEntity = entityMapper.getUserEntityFromNewUser(newUser);
-        UserEntity savedUser = userRepository.save(userEntity);
-        return entityMapper.getUserResponseFromUserEntity(savedUser);
+        return userRepository.save(userEntity);
+    }
+
+    @Override
+    public UserEntity getUserById(String userId) {
+        return userRepository.findById(UUID.fromString(userId)).orElseThrow(()->new UserNotFoundException("User not found"));
     }
 
 }
