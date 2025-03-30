@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.Set;
 
 @Builder
 @Getter
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -37,4 +37,8 @@ public class UserEntity {
     private LocalDate dateOfBirth;
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "ownerId",cascade = CascadeType.DETACH)
+    private Set<Space> space;
+
 }

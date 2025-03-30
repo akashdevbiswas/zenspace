@@ -3,7 +3,7 @@ package com.cromxt.zenspaceserver.service.impl;
 
 import com.cromxt.toolkit.crombucket.clients.CromBucketWebClient;
 import com.cromxt.toolkit.crombucket.response.FileResponse;
-import com.cromxt.zenspaceserver.dtos.request.NewUser;
+import com.cromxt.zenspaceserver.dtos.request.UserRequest;
 import com.cromxt.zenspaceserver.dtos.response.UserResponse;
 import com.cromxt.zenspaceserver.entity.Gender;
 import com.cromxt.zenspaceserver.entity.UserEntity;
@@ -40,17 +40,17 @@ public class EntityMapperImpl implements EntityMapper {
     }
 
     @Override
-    public UserEntity getUserEntityFromNewUser(NewUser newUser) {
-        String encodedPassword = passwordEncoder.encode(newUser.password());
+    public UserEntity getUserEntityFromUserRequest(UserRequest userRequest) {
+        String encodedPassword = passwordEncoder.encode(userRequest.password());
         FileResponse fileResponse=null;
         String profileImageUrl = null;
-        if(newUser.profileImage() == null && newUser.avatar() == null) {
+        if(userRequest.profileImage() == null && userRequest.avatar() == null) {
             profileImageUrl = utilService.getDefaultAvatarUrl();
-        }else if(newUser.avatar() != null) {
-            profileImageUrl = utilService.getAvatarUrlByIndex(newUser.avatar());
+        }else if(userRequest.avatar() != null) {
+            profileImageUrl = utilService.getAvatarUrlByIndex(userRequest.avatar());
         }else{
             try {
-                fileResponse = cromBucketWebClient.saveFile(newUser.profileImage());
+                fileResponse = cromBucketWebClient.saveFile(userRequest.profileImage());
                 profileImageUrl = fileResponse.getAccessUrl();
             } catch (IOException e) {
                 throw new CromBucketClientException("Failed to save the file with message: " + e.getMessage());
@@ -58,13 +58,13 @@ public class EntityMapperImpl implements EntityMapper {
         }
 
         UserEntity.UserEntityBuilder userEntityBuilder = UserEntity.builder()
-                .username(newUser.username())
+                .username(userRequest.username())
                 .password(encodedPassword)
-                .email(newUser.email())
-                .firstName(newUser.firstName())
-                .lastName(newUser.lastName())
-                .dateOfBirth(LocalDate.parse(newUser.dateOfBirth()))
-                .gender(Gender.valueOf(newUser.gender().toUpperCase()));
+                .email(userRequest.email())
+                .firstName(userRequest.firstName())
+                .lastName(userRequest.lastName())
+                .dateOfBirth(LocalDate.parse(userRequest.dateOfBirth()))
+                .gender(Gender.valueOf(userRequest.gender().toUpperCase()));
         if(fileResponse==null){
             return userEntityBuilder
                     .avatarUrl(profileImageUrl)

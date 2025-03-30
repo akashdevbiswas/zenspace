@@ -1,7 +1,7 @@
 package com.cromxt.zenspaceserver.controller;
 
 
-import com.cromxt.zenspaceserver.dtos.request.NewUser;
+import com.cromxt.zenspaceserver.dtos.request.UserRequest;
 import com.cromxt.zenspaceserver.dtos.request.UserCredential;
 import com.cromxt.zenspaceserver.dtos.response.AuthTokens;
 import com.cromxt.zenspaceserver.dtos.response.UserResponse;
@@ -54,8 +54,8 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse registerUser(@ModelAttribute NewUser newUser) {
-        return entityMapper.getUserResponseFromUserEntity(userService.saveUser(newUser));
+    public UserResponse registerUser(@ModelAttribute UserRequest userRequest) {
+        return entityMapper.getUserResponseFromUserEntity(userService.saveUser(userRequest));
     }
 
     @GetMapping("/avatars")
