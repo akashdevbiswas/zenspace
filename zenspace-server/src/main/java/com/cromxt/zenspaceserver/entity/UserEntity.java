@@ -38,7 +38,4 @@ public class UserEntity {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "ownerId",cascade = CascadeType.DETACH)
-    private Set<Space> space;
-
 }

@@ -21,9 +21,6 @@ public class Space {
     private String name;
     private String description;
     private String imageUrl;
-    @ManyToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    private UserEntity ownerId;
 
     @OneToMany(mappedBy = "space")
     private Set<Rule> rule;

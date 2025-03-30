@@ -16,6 +16,7 @@ public class SpaceUserCompositeKey implements Serializable {
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity userId;
+
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "space_id", referencedColumnName = "id")
     private Space spaceId;

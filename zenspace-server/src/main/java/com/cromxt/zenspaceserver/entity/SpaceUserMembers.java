@@ -14,7 +14,7 @@ public class SpaceUserMembers {
     private SpaceUserCompositeKey id;
     @CreationTimestamp
     private LocalDate joinedAt;
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "rule_id", referencedColumnName = "id")
     private Rule rule;
 }
