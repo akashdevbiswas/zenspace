@@ -1,9 +1,8 @@
 package com.cromxt.zenspaceserver.controller;
 
 
-import com.cromxt.zenspaceserver.dtos.response.UserResponse;
-import com.cromxt.zenspaceserver.entity.UserEntity;
-import com.cromxt.zenspaceserver.service.EntityMapper;
+import com.cromxt.zenspaceserver.dtos.request.UpdatedUserData;
+import com.cromxt.zenspaceserver.dtos.response.UserProfileResponse;
 import com.cromxt.zenspaceserver.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,12 +14,18 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private final EntityMapper entityMapper;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserResponse getUser(@RequestAttribute String userId) {
-        UserEntity userEntity = userService.getUserById(userId);
-        return entityMapper.getUserResponseFromUserEntity(userEntity);
+    public UserProfileResponse getUser(@RequestAttribute String userId) {
+        userService.getUserById(userId);
+
+        return null;
+    }
+
+    @PutMapping
+    public UserProfileResponse updateUserProfile(@RequestBody UpdatedUserData updatedUserData){
+
+        return null;
     }
 }

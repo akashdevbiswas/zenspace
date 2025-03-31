@@ -1,14 +1,10 @@
 package com.cromxt.zenspaceserver.controller;
 
 
-import com.cromxt.zenspaceserver.dtos.request.UserRequest;
+import com.cromxt.zenspaceserver.dtos.request.NewUserRequest;
 import com.cromxt.zenspaceserver.dtos.request.UserCredential;
 import com.cromxt.zenspaceserver.dtos.response.AuthTokens;
-import com.cromxt.zenspaceserver.dtos.response.UserResponse;
-import com.cromxt.zenspaceserver.service.AuthService;
-import com.cromxt.zenspaceserver.service.EntityMapper;
-import com.cromxt.zenspaceserver.service.UserService;
-import com.cromxt.zenspaceserver.service.UtilService;
+import com.cromxt.zenspaceserver.service.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +20,8 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthService authService;
-    private final UtilService utilService;
     private final EntityMapper entityMapper;
+    private final MediaObjectService mediaObjectService;
 
 
     @PostMapping
@@ -54,13 +50,13 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse registerUser(@ModelAttribute UserRequest userRequest) {
-        return entityMapper.getUserResponseFromUserEntity(userService.saveUser(userRequest));
+    public void registerUser(@ModelAttribute NewUserRequest newUserRequest) {
+//        TODO:Implement the logic to create a user.
     }
 
     @GetMapping("/avatars")
     public List<String> getAllAvailableAvatars(){
-        return utilService.getAllAvailableAvatars();
+        return mediaObjectService.getAllAvailableAvatars();
     }
 
 }

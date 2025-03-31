@@ -1,5 +1,6 @@
 package com.cromxt.zenspaceserver.service.impl;
 
+import com.cromxt.zenspaceserver.entity.PlatformPermissions;
 import com.cromxt.zenspaceserver.service.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -7,13 +8,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.security.Permissions;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JWTServiceImpl implements JWTService {
@@ -90,6 +93,17 @@ public class JWTServiceImpl implements JWTService {
     @Override
     public Boolean isTokenNonExpired(String token) {
         return !extractExpiration(token).before(new Date());
+    }
+
+    @Override
+    public Set<PlatformPermissions> extractAuthorities(String token) {
+        return extractClaim(token,claims -> {
+            String[] authorities = claims.get("authorities", String.class).split(",");
+            if(authorities.length == 0){
+                return Collections.emptySet();
+            }
+            return Arrays.stream(authorities).map(PlatformPermissions::valueOf).collect(Collectors.toSet());
+        });
     }
 
     private Date extractExpiration(String token) {

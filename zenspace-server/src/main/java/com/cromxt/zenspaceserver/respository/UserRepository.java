@@ -8,10 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
-public interface UserRepository extends CrudRepository<UserEntity, UUID> {
+public interface UserRepository extends CrudRepository<UserEntity, String> {
 
     @Query("SELECT u FROM UserEntity u WHERE u.username = :usernameOrEmail OR u.email = :usernameOrEmail")
     Optional<UserEntity> findByUsernameOrEmail(@Param("usernameOrEmail") String userId);

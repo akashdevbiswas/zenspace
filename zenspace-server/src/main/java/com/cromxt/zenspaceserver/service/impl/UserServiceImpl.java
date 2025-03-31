@@ -1,6 +1,6 @@
 package com.cromxt.zenspaceserver.service.impl;
 
-import com.cromxt.zenspaceserver.dtos.request.UserRequest;
+import com.cromxt.zenspaceserver.dtos.request.NewUserRequest;
 import com.cromxt.zenspaceserver.dtos.request.UserCredential;
 import com.cromxt.zenspaceserver.dtos.response.AuthTokens;
 import com.cromxt.zenspaceserver.entity.UserEntity;
@@ -58,14 +58,14 @@ public class UserServiceImpl implements AuthService, UserService {
     }
 
     @Override
-    public UserEntity saveUser(UserRequest userRequest) {
-        UserEntity userEntity = entityMapper.getUserEntityFromUserRequest(userRequest);
+    public UserEntity saveUser(NewUserRequest newUserRequest) {
+        UserEntity userEntity = entityMapper.getUserEntityFromUserRequest(newUserRequest);
         return userRepository.save(userEntity);
     }
 
     @Override
     public UserEntity getUserById(String userId) {
-        return userRepository.findById(UUID.fromString(userId)).orElseThrow(()->new UserNotFoundException("User not found"));
+        return userRepository.findById().orElseThrow(()->new UserNotFoundException("User not found"));
     }
 
 }

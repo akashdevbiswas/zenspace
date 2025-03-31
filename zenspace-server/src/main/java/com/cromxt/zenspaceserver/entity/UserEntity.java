@@ -4,10 +4,12 @@ package com.cromxt.zenspaceserver.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.Collection;
 
 @Builder
 @Getter
@@ -17,25 +19,30 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    @Column(name = "first_name")
-    private String firstName;
-    @Column(name = "last_name")
-    private String lastName;
+
     private String email;
     private String username;
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "roleId")
+    private UserRole userRole;
+
+    @Getter(AccessLevel.NONE)
     private String password;
-    private String avatarUrl;
-    @Column(name = "media_id")
-    private String mediaId;
-    @Column(name = "date_of_birth")
-    private LocalDate dateOfBirth;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return userRole.getPermissions().stream().map(permission-> new SimpleGrantedAuthority(permission.name())).toList();
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
 }

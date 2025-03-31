@@ -3,13 +3,14 @@ package com.cromxt.zenspaceserver.service.impl;
 
 import com.cromxt.toolkit.crombucket.clients.CromBucketWebClient;
 import com.cromxt.toolkit.crombucket.response.FileResponse;
-import com.cromxt.zenspaceserver.dtos.request.UserRequest;
-import com.cromxt.zenspaceserver.dtos.response.UserResponse;
+import com.cromxt.zenspaceserver.dtos.request.NewUserRequest;
+import com.cromxt.zenspaceserver.dtos.response.UserProfileResponse;
 import com.cromxt.zenspaceserver.entity.Gender;
 import com.cromxt.zenspaceserver.entity.UserEntity;
 import com.cromxt.zenspaceserver.exceptions.CromBucketClientException;
 import com.cromxt.zenspaceserver.service.EntityMapper;
-import com.cromxt.zenspaceserver.service.UtilService;
+import com.cromxt.zenspaceserver.service.MediaObjectService;
+import com.cromxt.zenspaceserver.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,56 +24,51 @@ public class EntityMapperImpl implements EntityMapper {
 
     private final PasswordEncoder passwordEncoder;
     private final CromBucketWebClient cromBucketWebClient;
-    private final UtilService utilService;
+    private final MediaObjectService mediaObjectService;
+    private final UserService userService;
 
     @Override
-    public UserResponse getUserResponseFromUserEntity(UserEntity userEntity) {
-        return new UserResponse(
-                userEntity.getId().toString(),
-                userEntity.getUsername(),
-                userEntity.getFirstName(),
-                userEntity.getLastName(),
-                userEntity.getEmail(),
-                userEntity.getAvatarUrl(),
-                userEntity.getDateOfBirth().toString(),
-                userEntity.getGender().name()
-        );
+    public UserProfileResponse getUserResponseFromUserEntity() {
+
+        return null;
     }
 
     @Override
-    public UserEntity getUserEntityFromUserRequest(UserRequest userRequest) {
-        String encodedPassword = passwordEncoder.encode(userRequest.password());
-        FileResponse fileResponse=null;
-        String profileImageUrl = null;
-        if(userRequest.profileImage() == null && userRequest.avatar() == null) {
-            profileImageUrl = utilService.getDefaultAvatarUrl();
-        }else if(userRequest.avatar() != null) {
-            profileImageUrl = utilService.getAvatarUrlByIndex(userRequest.avatar());
-        }else{
-            try {
-                fileResponse = cromBucketWebClient.saveFile(userRequest.profileImage());
-                profileImageUrl = fileResponse.getAccessUrl();
-            } catch (IOException e) {
-                throw new CromBucketClientException("Failed to save the file with message: " + e.getMessage());
-            }
-        }
+    public UserEntity getUserEntityFromUserRequest(NewUserRequest newUserRequest) {
+//        String encodedPassword = passwordEncoder.encode(newUserRequest.password());
+//        FileResponse fileResponse=null;
+//        String profileImageUrl = null;
+//        if(newUserRequest.profileImage() == null && newUserRequest.avatar() == null) {
+//            profileImageUrl = utilService.getDefaultAvatarUrl();
+//        }else if(newUserRequest.avatar() != null) {
+//            profileImageUrl = utilService.getAvatarUrlByIndex(newUserRequest.avatar());
+//        }else{
+//            try {
+//                fileResponse = cromBucketWebClient.saveFile(newUserRequest.profileImage());
+//                profileImageUrl = fileResponse.getAccessUrl();
+//            } catch (IOException e) {
+//                throw new CromBucketClientException("Failed to save the file with message: " + e.getMessage());
+//            }
+//        }
+//
+//        UserEntity.UserEntityBuilder userEntityBuilder = UserEntity.builder()
+//                .username(newUserRequest.username())
+//                .password(encodedPassword)
+//                .email(newUserRequest.email())
+//                .firstName(newUserRequest.firstName())
+//                .lastName(newUserRequest.lastName())
+//                .dateOfBirth(LocalDate.parse(newUserRequest.dateOfBirth()))
+//                .gender(Gender.valueOf(newUserRequest.gender().toUpperCase()));
+//        if(fileResponse==null){
+//            return userEntityBuilder
+//                    .avatarUrl(profileImageUrl)
+//                    .build();
+//        }
+//        return userEntityBuilder
+//                .avatarUrl(profileImageUrl)
+//                .mediaId(fileResponse.getMediaId())
+//                .build();
 
-        UserEntity.UserEntityBuilder userEntityBuilder = UserEntity.builder()
-                .username(userRequest.username())
-                .password(encodedPassword)
-                .email(userRequest.email())
-                .firstName(userRequest.firstName())
-                .lastName(userRequest.lastName())
-                .dateOfBirth(LocalDate.parse(userRequest.dateOfBirth()))
-                .gender(Gender.valueOf(userRequest.gender().toUpperCase()));
-        if(fileResponse==null){
-            return userEntityBuilder
-                    .avatarUrl(profileImageUrl)
-                    .build();
-        }
-        return userEntityBuilder
-                .avatarUrl(profileImageUrl)
-                .mediaId(fileResponse.getMediaId())
-                .build();
+        return null;
     }
 }
