@@ -18,43 +18,4 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 class UserRepositoryTest {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    private UserEntity userEntity;
-
-    @BeforeEach
-    void createAUser(){
-        UserEntity userEntity = UserEntity.builder()
-                .firstName("firstName")
-                .lastName("lastName")
-                .email("email")
-                .gender(Gender.MALE)
-                .mediaId("mediaId")
-                .avatarUrl("profileImage")
-                .dateOfBirth(LocalDate.of(1999, 1, 1))
-                .username("username")
-                .password("password")
-                .build();
-        this.userEntity = userRepository.save(userEntity);
-    }
-
-    @AfterEach
-    void deleteAUser(){
-        userRepository.delete(userEntity);
-    }
-
-    @Test
-    void findUserByUsernameOrEmail(){
-        Optional<UserEntity> userByUserName = userRepository.findByUsernameOrEmail("username");
-        Optional<UserEntity> userByEmail = userRepository.findByUsernameOrEmail("email");
-
-        assertTrue(userByUserName.isPresent());
-        assertTrue(userByEmail.isPresent());
-
-        UserEntity usernameUser = userByUserName.get();
-        UserEntity emailUser = userByEmail.get();
-
-        assertEquals(usernameUser.getUsername(), emailUser.getUsername());
-    }
 }

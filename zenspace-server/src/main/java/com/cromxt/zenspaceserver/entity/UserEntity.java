@@ -24,10 +24,12 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(unique = true)
     private String email;
+    @Column(unique = true, nullable = false)
     private String username;
     @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "roleId")
+    @JoinColumn(name = "role_id", referencedColumnName = "roleName")
     private UserRole userRole;
 
     @Getter(AccessLevel.NONE)
@@ -38,7 +40,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return userRole.getPermissions().stream().map(permission-> new SimpleGrantedAuthority(permission.name())).toList();
+        return userRole.getAllGrantedAuthorities();
     }
 
     @Override

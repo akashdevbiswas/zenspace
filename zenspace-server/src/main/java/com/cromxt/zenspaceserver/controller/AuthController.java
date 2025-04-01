@@ -4,11 +4,14 @@ package com.cromxt.zenspaceserver.controller;
 import com.cromxt.zenspaceserver.dtos.request.NewUserRequest;
 import com.cromxt.zenspaceserver.dtos.request.UserCredential;
 import com.cromxt.zenspaceserver.dtos.response.AuthTokens;
-import com.cromxt.zenspaceserver.service.*;
+import com.cromxt.zenspaceserver.service.AuthService;
+import com.cromxt.zenspaceserver.service.MediaObjectService;
+import com.cromxt.zenspaceserver.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
     private final AuthService authService;
-    private final EntityMapper entityMapper;
+    private final UserService userService;
     private final MediaObjectService mediaObjectService;
 
 
@@ -49,9 +51,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void registerUser(@ModelAttribute NewUserRequest newUserRequest) {
-//        TODO:Implement the logic to create a user.
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void registerUser(@RequestBody NewUserRequest newUserRequest) {
+        userService.saveUser(newUserRequest);
     }
 
     @GetMapping("/avatars")

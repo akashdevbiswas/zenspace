@@ -1,9 +1,7 @@
 package com.cromxt.zenspaceserver.service;
 
 import com.cromxt.zenspaceserver.entity.PlatformPermissions;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

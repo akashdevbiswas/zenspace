@@ -98,11 +98,17 @@ public class JWTServiceImpl implements JWTService {
     @Override
     public Set<PlatformPermissions> extractAuthorities(String token) {
         return extractClaim(token,claims -> {
-            String[] authorities = claims.get("authorities", String.class).split(",");
-            if(authorities.length == 0){
+            List<String> authorities;
+            try{
+                authorities = (ArrayList<String>) claims.get("authorities", ArrayList.class);
+            }catch (Exception e){
                 return Collections.emptySet();
             }
-            return Arrays.stream(authorities).map(PlatformPermissions::valueOf).collect(Collectors.toSet());
+
+            if(authorities.isEmpty()){
+                return Collections.emptySet();
+            }
+            return authorities.stream().map(PlatformPermissions::valueOf).collect(Collectors.toSet());
         });
     }
 

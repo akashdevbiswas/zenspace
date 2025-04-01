@@ -18,7 +18,7 @@ public class UserProfile {
     private String userId;
 
     @OneToOne
-    @MapsId(value = "userId")
+    @MapsId
     private UserEntity user;
 
     @Column(name = "first_name")

@@ -4,9 +4,12 @@ package com.cromxt.zenspaceserver.service.impl;
 import com.cromxt.toolkit.crombucket.clients.CromBucketWebClient;
 import com.cromxt.toolkit.crombucket.response.FileResponse;
 import com.cromxt.zenspaceserver.dtos.request.NewUserRequest;
+import com.cromxt.zenspaceserver.dtos.request.UpdatedUserData;
 import com.cromxt.zenspaceserver.dtos.response.UserProfileResponse;
 import com.cromxt.zenspaceserver.entity.Gender;
 import com.cromxt.zenspaceserver.entity.UserEntity;
+import com.cromxt.zenspaceserver.entity.UserProfile;
+import com.cromxt.zenspaceserver.entity.UserRole;
 import com.cromxt.zenspaceserver.exceptions.CromBucketClientException;
 import com.cromxt.zenspaceserver.service.EntityMapper;
 import com.cromxt.zenspaceserver.service.MediaObjectService;
@@ -25,7 +28,8 @@ public class EntityMapperImpl implements EntityMapper {
     private final PasswordEncoder passwordEncoder;
     private final CromBucketWebClient cromBucketWebClient;
     private final MediaObjectService mediaObjectService;
-    private final UserService userService;
+    private final UserRole userRole;
+
 
     @Override
     public UserProfileResponse getUserResponseFromUserEntity() {
@@ -35,7 +39,17 @@ public class EntityMapperImpl implements EntityMapper {
 
     @Override
     public UserEntity getUserEntityFromUserRequest(NewUserRequest newUserRequest) {
-//        String encodedPassword = passwordEncoder.encode(newUserRequest.password());
+        return UserEntity.builder()
+                .username(newUserRequest.username())
+                .userRole(userRole)
+                .password(passwordEncoder.encode(newUserRequest.password()))
+                .email(newUserRequest.email())
+                .build();
+    }
+
+    @Override
+    public UserProfile getUserProfileFromUpdateUserdata(UpdatedUserData updatedUserData) {
+        //        String encodedPassword = passwordEncoder.encode(newUserRequest.password());
 //        FileResponse fileResponse=null;
 //        String profileImageUrl = null;
 //        if(newUserRequest.profileImage() == null && newUserRequest.avatar() == null) {
@@ -68,7 +82,6 @@ public class EntityMapperImpl implements EntityMapper {
 //                .avatarUrl(profileImageUrl)
 //                .mediaId(fileResponse.getMediaId())
 //                .build();
-
         return null;
     }
 }

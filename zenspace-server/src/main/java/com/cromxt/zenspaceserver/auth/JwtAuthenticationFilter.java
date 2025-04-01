@@ -19,7 +19,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -61,11 +60,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
+            String userId = jwtService.extractSubject(token);
+            request.setAttribute("userId", userId);
         }
-        filterChain.doFilter(request, response);
-
-        String userId = jwtService.extractSubject(token);
-        request.setAttribute("userId", userId);
         filterChain.doFilter(request, response);
     }
 

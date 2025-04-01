@@ -11,61 +11,72 @@ import com.cromxt.zenspaceserver.service.EntityMapper;
 import com.cromxt.zenspaceserver.service.JWTService;
 import com.cromxt.zenspaceserver.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements AuthService, UserService {
+public class UserServiceImpl implements AuthService, UserService{
 
     private final UserRepository userRepository;
     private final EntityMapper entityMapper;
     private final JWTService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public AuthTokens generateToken(UserCredential credential) {
 
-        Optional<UserEntity> userEntityOptional = userRepository.findByUsernameOrEmail(credential.usernameOrEmail());
+        UsernamePasswordAuthenticationToken userToken = new UsernamePasswordAuthenticationToken(
+                credential.usernameOrEmail(),
+                credential.password()
+        );
 
-        UserEntity savedUser = userEntityOptional.orElseThrow(() -> new UserNotFoundException("Invalid username or email"));
-        boolean matches = passwordEncoder.matches(credential.password(), savedUser.getPassword());
+        Authentication userAuthentication = authenticationManager.authenticate(userToken);
 
-        if(!matches){
-            throw new UserNotFoundException("Invalid username or Password");
-        }
-        String userId = savedUser.getId().toString();
-        String accessToken = jwtService.generateAccessToken(userId, new HashMap<>());
-        String refreshToken = jwtService.generateRefreshToken(userId);
+        UserEntity user = (UserEntity) userAuthentication.getPrincipal();
+
+        Map<String, Object> extraClaims = new HashMap<>();
+        List<String> authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+
+        extraClaims.put("authorities", authorities);
+
+        String accessToken = jwtService.generateAccessToken(user.getId(), extraClaims);
+        String refreshToken = jwtService.generateRefreshToken(user.getId());
         return new AuthTokens(accessToken, refreshToken);
     }
 
     @Override
     public AuthTokens generateAccessToken(String refreshToken) {
-        UUID userId = UUID.fromString(jwtService.extractSubject(refreshToken));
+        String userId = jwtService.extractSubject(refreshToken);
 
         Optional<UserEntity> savedUserOptional = userRepository.findById(userId);
 
         UserEntity savedUser = savedUserOptional.orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        String newAccessToken = jwtService.generateAccessToken(savedUser.getId().toString(), new HashMap<>());
+        String newAccessToken = jwtService.generateAccessToken(savedUser.getId(), new HashMap<>());
         return new AuthTokens(newAccessToken, refreshToken);
     }
 
     @Override
-    public UserEntity saveUser(NewUserRequest newUserRequest) {
+    public void saveUser(NewUserRequest newUserRequest) {
         UserEntity userEntity = entityMapper.getUserEntityFromUserRequest(newUserRequest);
-        return userRepository.save(userEntity);
+        userRepository.save(userEntity);
     }
 
     @Override
     public UserEntity getUserById(String userId) {
-        return userRepository.findById().orElseThrow(()->new UserNotFoundException("User not found"));
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
 }
