@@ -4,6 +4,7 @@ import com.cromxt.zenspaceserver.dtos.request.NewUserRequest;
 import com.cromxt.zenspaceserver.dtos.request.UserCredential;
 import com.cromxt.zenspaceserver.dtos.response.AuthTokens;
 import com.cromxt.zenspaceserver.entity.UserEntity;
+import com.cromxt.zenspaceserver.entity.UserRole;
 import com.cromxt.zenspaceserver.exceptions.UserNotFoundException;
 import com.cromxt.zenspaceserver.respository.UserRepository;
 import com.cromxt.zenspaceserver.service.AuthService;
@@ -47,9 +48,11 @@ public class UserServiceImpl implements AuthService, UserService{
         UserEntity user = (UserEntity) userAuthentication.getPrincipal();
 
         Map<String, Object> extraClaims = new HashMap<>();
-        List<String> authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        UserRole userRole = user.getUserRole();
+        List<String> authorities = userRole.getPermissions().stream().map(Enum::name).toList();
 
         extraClaims.put("authorities", authorities);
+        extraClaims.put("role", userRole.getRoleName());
 
         String accessToken = jwtService.generateAccessToken(user.getId(), extraClaims);
         String refreshToken = jwtService.generateRefreshToken(user.getId());

@@ -1,24 +1,24 @@
 package com.cromxt.zenspaceserver.service.impl;
 
 import com.cromxt.zenspaceserver.entity.PlatformPermissions;
+import com.cromxt.zenspaceserver.entity.UserRole;
 import com.cromxt.zenspaceserver.service.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.security.Key;
-import java.security.Permissions;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class JWTServiceImpl implements JWTService {
 
     private final String secret;
@@ -96,19 +96,20 @@ public class JWTServiceImpl implements JWTService {
     }
 
     @Override
-    public Set<PlatformPermissions> extractAuthorities(String token) {
+    public UserRole extractRole(String token) {
         return extractClaim(token,claims -> {
-            List<String> authorities;
             try{
-                authorities = (ArrayList<String>) claims.get("authorities", ArrayList.class);
+                List<String> authorities = (ArrayList<String>) claims.get("authorities", ArrayList.class);
+                String roleName = claims.get("role",String.class);
+                Set<PlatformPermissions> permissions =  authorities.stream().map(PlatformPermissions::valueOf).collect(Collectors.toSet());
+                return UserRole.builder()
+                        .roleName(roleName)
+                        .permissions(permissions)
+                        .build();
             }catch (Exception e){
-                return Collections.emptySet();
+                log.error("Error while extract the claims with message {}", e.getMessage());
             }
-
-            if(authorities.isEmpty()){
-                return Collections.emptySet();
-            }
-            return authorities.stream().map(PlatformPermissions::valueOf).collect(Collectors.toSet());
+           return null;
         });
     }
 

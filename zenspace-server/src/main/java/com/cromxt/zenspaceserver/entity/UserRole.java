@@ -21,16 +21,9 @@ public class UserRole {
 
     @Enumerated(EnumType.STRING)
     @ElementCollection
-    @Getter(AccessLevel.NONE)
     private Set<PlatformPermissions> permissions;
 
 
     @OneToMany(mappedBy = "userRole")
     private Set<UserEntity> users;
-
-    public Set<? extends GrantedAuthority> getAllGrantedAuthorities(){
-        Set<SimpleGrantedAuthority> authorities = permissions.stream().map(permissions -> new SimpleGrantedAuthority(permissions.name())).collect(Collectors.toSet());
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+roleName));
-        return authorities;
-    }
 }

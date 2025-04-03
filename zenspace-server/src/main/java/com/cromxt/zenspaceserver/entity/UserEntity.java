@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Builder
 @Getter
@@ -40,7 +42,9 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return userRole.getAllGrantedAuthorities();
+        Set<SimpleGrantedAuthority> authorities = userRole.getPermissions().stream().map(permissions -> new SimpleGrantedAuthority(permissions.name())).collect(Collectors.toSet());
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.getRoleName()));
+        return authorities;
     }
 
     @Override

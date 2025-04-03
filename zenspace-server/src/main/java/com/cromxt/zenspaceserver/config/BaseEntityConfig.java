@@ -21,7 +21,7 @@ public class BaseEntityConfig {
     @Bean
     public UserRole adminRole(){
         UserRole userRole = UserRole.builder()
-                .roleName("ROLE_ADMIN")
+                .roleName("ADMIN")
                 .permissions(Set.of(PlatformPermissions.values()))
                 .build();
         return userRoleRepository.save(userRole);

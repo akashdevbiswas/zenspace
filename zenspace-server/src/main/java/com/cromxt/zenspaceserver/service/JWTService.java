@@ -1,9 +1,8 @@
 package com.cromxt.zenspaceserver.service;
 
-import com.cromxt.zenspaceserver.entity.PlatformPermissions;
+import com.cromxt.zenspaceserver.entity.UserRole;
 
 import java.util.Map;
-import java.util.Set;
 
 public interface JWTService {
 
@@ -13,5 +12,5 @@ public interface JWTService {
     Boolean isTokenValid(String token);
     Boolean isTokenValid(String token, String username);
     Boolean isTokenNonExpired(String token);
-    Set<PlatformPermissions> extractAuthorities(String token);
+    UserRole extractRole(String token);
 }
