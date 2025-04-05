@@ -30,8 +30,9 @@ public class UserEntity implements UserDetails {
     private String email;
     @Column(unique = true, nullable = false)
     private String username;
+
     @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "roleName")
+    @JoinColumn(name = "role_name", referencedColumnName = "role_name")
     private UserRole userRole;
 
     @Getter(AccessLevel.NONE)

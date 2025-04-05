@@ -14,15 +14,15 @@ import java.util.stream.Collectors;
 @Builder
 @Getter
 @Setter
+@Table(name = "user_role")
 public class UserRole {
-
     @Id
+    @Column(name = "role_name")
     private String roleName;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection
     private Set<PlatformPermissions> permissions;
-
 
     @OneToMany(mappedBy = "userRole")
     private Set<UserEntity> users;

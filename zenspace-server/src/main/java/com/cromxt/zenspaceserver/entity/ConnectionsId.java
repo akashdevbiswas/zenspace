@@ -11,13 +11,12 @@ import java.io.Serializable;
 
 @Embeddable
 @EqualsAndHashCode
-public class SpaceUserCompositeKey implements Serializable {
+public class ConnectionsId implements Serializable {
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity userId;
-
     @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "space_id", referencedColumnName = "id")
-    private Space spaceId;
+    @JoinColumn(name = "connects_with", referencedColumnName = "id")
+    private UserEntity connectsWith;
 }

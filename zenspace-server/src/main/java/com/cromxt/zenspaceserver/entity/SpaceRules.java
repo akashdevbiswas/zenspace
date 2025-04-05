@@ -6,19 +6,21 @@ import lombok.*;
 
 import java.util.Set;
 
+
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "spaces")
-public class Space {
+@Table(name = "space_rules")
+public class SpaceRules {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    private String name;
-    private String description;
-    private String imageUrl;
+
+    @Enumerated(EnumType.STRING)
+    @ElementCollection
+    private Set<SpacePermissions> spacePermissions;
 }

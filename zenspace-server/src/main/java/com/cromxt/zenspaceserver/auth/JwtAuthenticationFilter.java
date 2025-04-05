@@ -1,6 +1,5 @@
 package com.cromxt.zenspaceserver.auth;
 
-import com.cromxt.zenspaceserver.entity.PlatformPermissions;
 import com.cromxt.zenspaceserver.entity.UserEntity;
 import com.cromxt.zenspaceserver.entity.UserRole;
 import com.cromxt.zenspaceserver.service.JWTService;
@@ -11,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -19,10 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -65,22 +59,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             request.setAttribute("userId", userId);
         }
         filterChain.doFilter(request, response);
-    }
-
-    private Optional<String> getTheUserIdFromTheRequest(String requestPath) {
-        int index = requestPath.lastIndexOf("/");
-        if (index == -1) {
-            return Optional.empty();
-        }
-        String userId = requestPath.substring(index + 1);
-        return Optional.of(userId);
-    }
-
-    private void buildResponse(HttpServletResponse response, String message, int status) throws IOException {
-        response.setStatus(status);
-        response.setHeader("Content-Type", "application/json");
-        PrintWriter writer = response.getWriter();
-        writer.write(String.format("{\"message\":\"%s\"}", message));
-        writer.flush();
     }
 }

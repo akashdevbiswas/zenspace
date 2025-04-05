@@ -9,12 +9,9 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "space_user_members")
 public class SpaceUserMembers {
-
     @EmbeddedId
-    private SpaceUserCompositeKey id;
+    private SpaceUserMembersKey id;
+
     @CreationTimestamp
     private LocalDate joinedAt;
-    @ManyToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "rule_id", referencedColumnName = "id")
-    private Rule rule;
 }

@@ -1,6 +1,6 @@
 package com.cromxt.zenspaceserver.entity;
 
-public enum Permissions {
+public enum SpacePermissions {
     ADMIN,
     WRITE,
     READ

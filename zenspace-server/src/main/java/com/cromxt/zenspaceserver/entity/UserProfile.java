@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Builder
 @Getter
 @Setter
+@Table(name = "profiles")
 public class UserProfile {
 
     @Id
@@ -21,17 +22,22 @@ public class UserProfile {
     @MapsId
     private UserEntity user;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name",nullable = false)
     private String firstName;
-    @Column(name = "last_name")
+    @Column(name = "last_name",nullable = false)
     private String lastName;
+    private String bio;
+
+    @OneToOne
+    @JoinColumn(name = "media_object_id", referencedColumnName = "id")
+    private MediaObjects mediaId;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
+    
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @OneToOne
-    @JoinColumn(name = "media_id", referencedColumnName = "id")
-    private MediaObjects mediaId;
+
 
 }

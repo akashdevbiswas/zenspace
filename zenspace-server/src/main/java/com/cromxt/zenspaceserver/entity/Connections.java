@@ -10,10 +10,10 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "user_connection_with")
-public class UserConnectionWith {
+public class Connections {
 
     @EmbeddedId
-    private UserToUserCompositeKey users;
+    private ConnectionsId users;
 
     @CreationTimestamp
     private LocalDate localDate;

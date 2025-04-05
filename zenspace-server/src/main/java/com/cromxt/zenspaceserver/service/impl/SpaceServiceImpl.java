@@ -1,7 +1,6 @@
 package com.cromxt.zenspaceserver.service.impl;
 
 
-import com.cromxt.zenspaceserver.entity.Rule;
 import com.cromxt.zenspaceserver.entity.Space;
 import com.cromxt.zenspaceserver.entity.UserEntity;
 import com.cromxt.zenspaceserver.respository.SpaceRepository;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 public class SpaceServiceImpl implements SpaceService {
 
     private final SpaceRepository spaceRepository;
-    private static final Rule rule = new Rule();
 
     @Override
     public Space createSpace(Space space, String userId) {
