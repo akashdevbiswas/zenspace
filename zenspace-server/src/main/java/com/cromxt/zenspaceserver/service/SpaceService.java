@@ -1,14 +1,18 @@
 package com.cromxt.zenspaceserver.service;
 
-import com.cromxt.zenspaceserver.entity.Space;
+import com.cromxt.zenspaceserver.dtos.request.SpaceRequest;
+import com.cromxt.zenspaceserver.dtos.response.SpacePageableResponse;
+import com.cromxt.zenspaceserver.dtos.response.SpaceResponse;
 
 public interface SpaceService {
-    Space createSpace(Space space, String userId);
-//    Space getSpace(String id);
-//    List<Space> getAllSpaces(String userId);
-//    Space findSpaceByName(String spaceName);
-//    void deleteSpace(String spaceId);
-//    Space updateSpace(Space space);
+    SpaceResponse createSpace(SpaceRequest newSpace, String userId);
 
+    SpacePageableResponse findSpacesBySpaceName(String spaceName, Integer pageNumber, Integer pageSize);
+
+    SpacePageableResponse getAllSpacesByUserId(String userId, Integer pageNumber, Integer pageSize);
+
+    void deleteSpace(String spaceId);
+
+    SpaceResponse updateSpace(String spaceId, SpaceRequest spaceRequest);
 
 }

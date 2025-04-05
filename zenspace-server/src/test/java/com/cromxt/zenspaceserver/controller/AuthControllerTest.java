@@ -1,11 +1,10 @@
 package com.cromxt.zenspaceserver.controller;
 
-import com.cromxt.zenspaceserver.auth.JwtAuthenticationFilter;
 import com.cromxt.zenspaceserver.config.SecurityConfig;
 import com.cromxt.zenspaceserver.dtos.request.NewUserRequest;
 import com.cromxt.zenspaceserver.service.AuthService;
 import com.cromxt.zenspaceserver.service.JWTService;
-import com.cromxt.zenspaceserver.service.MediaObjectService;
+import com.cromxt.zenspaceserver.service.MediaObjectsService;
 import com.cromxt.zenspaceserver.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +35,7 @@ class AuthControllerTest {
     private AuthService authService;
 
     @MockitoBean
-    private MediaObjectService mediaObjectService;
+    private MediaObjectsService mediaObjectsService;
 
     @MockitoBean
     private AuthenticationProvider authenticationProvider;

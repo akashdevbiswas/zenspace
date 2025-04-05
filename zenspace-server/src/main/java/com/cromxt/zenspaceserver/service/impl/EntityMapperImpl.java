@@ -2,24 +2,20 @@ package com.cromxt.zenspaceserver.service.impl;
 
 
 import com.cromxt.toolkit.crombucket.clients.CromBucketWebClient;
-import com.cromxt.toolkit.crombucket.response.FileResponse;
 import com.cromxt.zenspaceserver.dtos.request.NewUserRequest;
-import com.cromxt.zenspaceserver.dtos.request.UpdatedUserData;
+import com.cromxt.zenspaceserver.dtos.request.SpaceRequest;
+import com.cromxt.zenspaceserver.dtos.request.UserDataRequest;
+import com.cromxt.zenspaceserver.dtos.response.SpacePageableResponse;
+import com.cromxt.zenspaceserver.dtos.response.SpaceResponse;
 import com.cromxt.zenspaceserver.dtos.response.UserProfileResponse;
-import com.cromxt.zenspaceserver.entity.Gender;
-import com.cromxt.zenspaceserver.entity.UserEntity;
-import com.cromxt.zenspaceserver.entity.UserProfile;
-import com.cromxt.zenspaceserver.entity.UserRole;
-import com.cromxt.zenspaceserver.exceptions.CromBucketClientException;
+import com.cromxt.zenspaceserver.entity.*;
 import com.cromxt.zenspaceserver.service.EntityMapper;
-import com.cromxt.zenspaceserver.service.MediaObjectService;
-import com.cromxt.zenspaceserver.service.UserService;
+import com.cromxt.zenspaceserver.service.MediaObjectsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +23,21 @@ public class EntityMapperImpl implements EntityMapper {
 
     private final PasswordEncoder passwordEncoder;
     private final CromBucketWebClient cromBucketWebClient;
-    private final MediaObjectService mediaObjectService;
     private final UserRole userRole;
-
+    private final MediaObjectsService mediaObjectsService;
 
     @Override
-    public UserProfileResponse getUserResponseFromUserEntity() {
-
-        return null;
+    public UserProfileResponse createUserProfileResponseFromUserProfile(UserProfile userProfile) {
+        UserEntity user = userProfile.getUser();
+        return UserProfileResponse.builder()
+                .id(userProfile.getId())
+                .username(user.getUsername())
+                .firstName(userProfile.getFirstName())
+                .lastName(userProfile.getLastName())
+                .profileImage(userProfile.getMediaObjects().getUrl())
+                .build();
     }
+
 
     @Override
     public UserEntity getUserEntityFromUserRequest(NewUserRequest newUserRequest) {
@@ -48,22 +50,8 @@ public class EntityMapperImpl implements EntityMapper {
     }
 
     @Override
-    public UserProfile getUserProfileFromUpdateUserdata(UpdatedUserData updatedUserData) {
-        //        String encodedPassword = passwordEncoder.encode(newUserRequest.password());
-//        FileResponse fileResponse=null;
-//        String profileImageUrl = null;
-//        if(newUserRequest.profileImage() == null && newUserRequest.avatar() == null) {
-//            profileImageUrl = utilService.getDefaultAvatarUrl();
-//        }else if(newUserRequest.avatar() != null) {
-//            profileImageUrl = utilService.getAvatarUrlByIndex(newUserRequest.avatar());
-//        }else{
-//            try {
-//                fileResponse = cromBucketWebClient.saveFile(newUserRequest.profileImage());
-//                profileImageUrl = fileResponse.getAccessUrl();
-//            } catch (IOException e) {
-//                throw new CromBucketClientException("Failed to save the file with message: " + e.getMessage());
-//            }
-//        }
+    public UserProfile getUserProfileFromUpdateUserdata(UserDataRequest userDataRequest) {
+
 //
 //        UserEntity.UserEntityBuilder userEntityBuilder = UserEntity.builder()
 //                .username(newUserRequest.username())
@@ -84,4 +72,80 @@ public class EntityMapperImpl implements EntityMapper {
 //                .build();
         return null;
     }
+
+    @Override
+    public Space createSpaceFromSpaceRequest(SpaceRequest spaceRequest, MediaObjects mediaObject) {
+        return Space.builder()
+                .name(spaceRequest.name())
+                .description(spaceRequest.description())
+                .mediaObjects(mediaObject)
+                .build();
+    }
+
+    @Override
+    public SpaceUserMembers createSpaceUserMembers(Space space, UserEntity user, SpaceRules rule) {
+        SpaceUserMembersKey primaryKey = SpaceUserMembersKey.builder()
+                .user(user)
+                .space(space)
+                .rule(rule)
+                .build();
+
+        return SpaceUserMembers.builder()
+                .id(primaryKey)
+                .build();
+    }
+
+
+    @Override
+    public SpaceResponse getSpaceResponseFromSpaceEntity(Space space, SpaceRules rules) {
+        return SpaceResponse.builder()
+                .id(space.getId())
+                .name(space.getName())
+                .description(space.getDescription())
+                .createdAt(space.getCreatedOn())
+                .spaceProfileImage(rules.getId())
+                .ruleId(rules.getId())
+                .build();
+    }
+
+    @Override
+    public SpacePageableResponse createSpacePageableResponse(List<SpaceResponse> spaceResponseList,
+                                                             Integer pageNumber,
+                                                             Integer pageSize,
+                                                             Boolean isLast) {
+        return SpacePageableResponse
+                .builder()
+                .pageSize(pageSize)
+                .pageNumber(pageNumber)
+                .last(isLast)
+                .spaceResponses(spaceResponseList)
+                .build();
+    }
+
+    @Override
+    public UserProfile createUserProfileFromUserData(String userId,
+                                                     UserDataRequest userDataRequest,
+                                                     MediaObjects mediaObjects) {
+
+        UserProfile.UserProfileBuilder userProfileBuilder = UserProfile.builder()
+                .user(UserEntity.builder()
+                        .id(userId)
+                        .build())
+                .bio(userDataRequest.bio())
+                .dateOfBirth(userDataRequest.dateOfBirth())
+                .firstName(userDataRequest.firstName())
+                .lastName(userDataRequest.lastName())
+                .gender(userDataRequest.gender())
+                .avatar(mediaObjectsService.getRandomAvatar());
+
+        if(mediaObjects==null){
+            return userProfileBuilder.build();
+        }
+
+        return userProfileBuilder
+                .mediaObjects(mediaObjects)
+                .build();
+    }
+
+
 }

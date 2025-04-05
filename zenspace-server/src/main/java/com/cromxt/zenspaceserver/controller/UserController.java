@@ -1,7 +1,7 @@
 package com.cromxt.zenspaceserver.controller;
 
 
-import com.cromxt.zenspaceserver.dtos.request.UpdatedUserData;
+import com.cromxt.zenspaceserver.dtos.request.UserDataRequest;
 import com.cromxt.zenspaceserver.dtos.response.UserProfileResponse;
 import com.cromxt.zenspaceserver.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +18,12 @@ public class UserController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public UserProfileResponse getUser(@RequestAttribute String userId) {
-        userService.getUserById(userId);
-
+        userService.getProfileFromUserId(userId);
         return null;
     }
 
     @PutMapping
-    public UserProfileResponse updateUserProfile(@RequestBody UpdatedUserData updatedUserData){
+    public UserProfileResponse updateUserProfile(@RequestBody UserDataRequest userDataRequest){
 
         return null;
     }

@@ -39,23 +39,26 @@ CREATE TABLE users (
 );
 
 CREATE TABLE profiles(
-    user_id UUID PRIMARY KEY,
+    id UUID PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
     bio VARCHAR(1000),
     media_object_id UUID,
     gender VARCHAR(10) CHECK (
             gender IN ('MALE', 'FEMALE', 'OTHER')
     ),
     date_of_birth DATE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (media_object_id) REFERENCES medias(id) ON DELETE CASCADE
+    FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (media_object_id) REFERENCES medias(id) ON DELETE SET NULL
 );
 
 CREATE TABLE spaces(
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL UNIQUE,
     description VARCHAR(1000),
+    created_on DATE GENERATED ALWAYS AS CURRENT_DATE STORED,
+    updated_on DATE DEFAULT CURRENT_DATE
     space_image UUID,
     FOREIGN KEY (space_image) REFERENCES medias(id)
 );
@@ -82,7 +85,7 @@ CREATE TABLE space_user_members(
     PRIMARY KEY(user_id, space_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (space_id) REFERENCES spaces(id) ON DELETE CASCADE,
-    FOREIGN KEY (rule_id) REFERENCES space_rules(id) ON DELETE SET NULL
+    FOREIGN KEY (rule_id) REFERENCES space_rules(id) ON DELETE CASCADE
 );
 
 create TABLE posts(

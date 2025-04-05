@@ -16,28 +16,29 @@ import java.time.LocalDate;
 public class UserProfile {
 
     @Id
-    private String userId;
+    private String id;
 
-    @OneToOne
     @MapsId
+    @OneToOne
     private UserEntity user;
 
-    @Column(name = "first_name",nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
-    @Column(name = "last_name",nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
-    private String bio;
 
+    private String bio;
     @OneToOne
     @JoinColumn(name = "media_object_id", referencedColumnName = "id")
-    private MediaObjects mediaId;
+    private MediaObjects mediaObjects;
+
+    private String avatar;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    
+
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
-
 
 
 }

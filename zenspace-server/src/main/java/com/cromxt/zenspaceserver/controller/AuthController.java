@@ -5,13 +5,12 @@ import com.cromxt.zenspaceserver.dtos.request.NewUserRequest;
 import com.cromxt.zenspaceserver.dtos.request.UserCredential;
 import com.cromxt.zenspaceserver.dtos.response.AuthTokens;
 import com.cromxt.zenspaceserver.service.AuthService;
-import com.cromxt.zenspaceserver.service.MediaObjectService;
+import com.cromxt.zenspaceserver.service.MediaObjectsService;
 import com.cromxt.zenspaceserver.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final UserService userService;
-    private final MediaObjectService mediaObjectService;
+    private final MediaObjectsService mediaObjectsService;
 
 
     @PostMapping
@@ -58,7 +57,7 @@ public class AuthController {
 
     @GetMapping("/avatars")
     public List<String> getAllAvailableAvatars(){
-        return mediaObjectService.getAllAvailableAvatars();
+        return mediaObjectsService.getAllAvailableAvatars();
     }
 
 }

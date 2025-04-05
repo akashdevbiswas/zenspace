@@ -5,21 +5,25 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Embeddable
 @EqualsAndHashCode
+@Builder
+@AllArgsConstructor
+@Getter
+@Setter
 public class SpaceUserMembersKey implements Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserEntity userId;
+    private UserEntity user;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "space_id", referencedColumnName = "id")
-    private Space spaceId;
+    private Space space;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rule_id", referencedColumnName = "id")
