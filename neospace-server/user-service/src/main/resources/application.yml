@@ -7,7 +7,7 @@ spring:
   datasource:
     username: postgres
     password: postgres
-    url: jdbc:postgresql://localhost:5432/cromxt
+    url: jdbc:postgresql://localhost:5432/users
   jpa:
     hibernate:
       ddl-auto: create-drop

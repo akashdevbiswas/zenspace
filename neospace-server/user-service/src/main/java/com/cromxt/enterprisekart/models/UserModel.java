@@ -1,7 +1,9 @@
 package com.cromxt.enterprisekart.models;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -28,10 +30,12 @@ public class UserModel implements UserDetails{
   private String id;
   private String username;
   private String password;
-  private String firstName;
-  private String lastName;
+  private String email;
   @Enumerated(EnumType.STRING)
   private UserRole role;
+  private LocalDate dateOfBirth;
+  @CreationTimestamp
+  private LocalDate createdOn;
 
 
   @Override

@@ -6,5 +6,6 @@ public interface UserProfileDTO{
     String getProfileImage();
     String getFirstName();
     String getLastName();
+    String getDescription();
     String getEmail();
 }

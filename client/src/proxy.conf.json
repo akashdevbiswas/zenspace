@@ -1,11 +1,20 @@
 {
-  "/server":{
+  "/users":{
     "target": "http://localhost:8900",
     "logLevel": "debug",
     "changeOrigin": true,
     "secure": false,
     "pathRewrite": {
-      "^/server": ""
+      "^/users": ""
+    }
+  },
+  "/spaces":{
+    "target": "http://localhost:8901",
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "secure": false,
+    "pathRewrite": {
+      "^/spaces": ""
     }
   }
 }
