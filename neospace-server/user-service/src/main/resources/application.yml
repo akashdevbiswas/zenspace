@@ -1,0 +1,16 @@
+AUTH_URL: http://localhost:4200/auth
+JWT_SECRET: 6cc13dc1bd0c6a5e868424ad19af7de2778eba9688b9bde5375fd5f4571ce54f
+JWT_EXPIRATION: 86400000
+spring:
+  application:
+    name: enterprise-kart
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/cromxt
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+server:
+  port: 8900

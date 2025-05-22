@@ -1,0 +1,29 @@
+<form class="form-container  mt-[50px] md:mt-[120px] xl:mt-[130px]" (submit)="onSubmit($event)">
+  <h1 class="form-heading">Sign Up</h1>
+  @if(errorService.isError()) {
+    <p class="text-red-600 text-center">
+      {{errorService.errorMessage()}}
+    </p>
+  }
+  <input-component
+    [title]="'Username'"
+    [type]="'text'"
+    [formControlName]="username"
+  ></input-component>
+  <input-component
+    [title]="'Password'"
+    [type]="'password'"
+    [formControlName]="password"
+  ></input-component>
+  <input-component
+    [title]="'First Name'"
+    [type]="'text'"
+    [formControlName]="firstName"
+  ></input-component>
+  <input-component
+    [title]="'Last Name'"
+    [type]="'text'"
+    [formControlName]="lastName"
+  ></input-component>
+  <button-component [buttonName]="'Submit'"></button-component>
+</form>

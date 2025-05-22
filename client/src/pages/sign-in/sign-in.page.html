@@ -1,0 +1,14 @@
+<form class="form-container mt-[50px] md:mt-[120px] xl:mt-[170px]" (submit)="onSubmit($event) ">
+  <h1 class="form-heading">Sign In</h1>
+  <input-component
+    [title]="'Username'"
+    [type]="'text'"
+    [formControlName]="username"
+  ></input-component>
+  <input-component
+    [title]="'Password'"
+    [type]="'password'"
+    [formControlName]="password"
+  ></input-component>
+  <button-component [buttonName]="'Submit'"></button-component>
+</form>
