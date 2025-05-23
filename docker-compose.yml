@@ -14,4 +14,18 @@ services:
       - SPRING_PROFILES_ACTIVE=local
     volumes:
       - ./var:/var/bucket
+
+  postgres:
+    image: postgres
+    container_name: neospace-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=neospace
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
     
